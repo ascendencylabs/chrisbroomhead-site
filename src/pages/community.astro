@@ -1,0 +1,61 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import LeadCapture from '~/components/common/LeadCapture.astro';
+
+const metadata = {
+  title: 'Community',
+  description:
+    'Join the Chris Broomhead community waitlist — protocol design discussion, bloodwork-led case breakdowns and Q&A, launching on Skool.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Community"
+    title="A serious room for protocol design"
+    subtitle="A private community for people who want bloodwork-led discussion, not forum noise. Launching on Skool — join the waitlist and you will be first in when the doors open."
+  />
+
+  <Features2
+    title="What the community is for"
+    subtitle="Built around the same standard as the consultations: evidence first, everything documented."
+    items={[
+      {
+        title: 'Case breakdowns',
+        description:
+          'Structured walkthroughs of anonymised protocols — what was changed, why, and what the follow-up bloodwork showed.',
+        icon: 'tabler:file-analytics',
+      },
+      {
+        title: 'Bloodwork interpretation',
+        description: 'Learn how markers actually drive selection, dosing architecture and sequencing decisions.',
+        icon: 'tabler:stethoscope',
+      },
+      {
+        title: 'Direct access',
+        description: 'Ask questions in a room where the answers come from the same process used in paid consultations.',
+        icon: 'tabler:messages',
+      },
+      {
+        title: 'Accountability',
+        description: 'Progress reviews and follow-up discipline — the habits that make protocols actually work.',
+        icon: 'tabler:target',
+      },
+    ]}
+  />
+
+  <section class="not-prose max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <h2 class="text-3xl md:text-4xl font-bold leading-tighter tracking-tighter mb-2 text-center">Join the waitlist</h2>
+    <p class="text-xl text-muted text-center mb-8">
+      Free to join the list. No spam — one email when the community opens.
+    </p>
+    <LeadCapture
+      source="community-waitlist"
+      buttonText="Join the waitlist"
+      successMessage="You are on the list — see you inside when it opens."
+      collectName={true}
+    />
+  </section>
+</Layout>

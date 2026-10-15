@@ -1,0 +1,62 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import LeadCapture from '~/components/common/LeadCapture.astro';
+import { CONTACT, SOCIALS } from '~/data/site';
+
+const metadata = {
+  title: 'Contact',
+  description:
+    'Contact Chris Broomhead Coaching — email, phone and social. Fastest response is by email; bookings go through Calendly.',
+};
+
+const instagram = SOCIALS.find((s) => s.label === 'Instagram');
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Contact"
+    title="Get in touch"
+    subtitle="Fastest response is by email. For anything booking-related, Calendly self-service is quickest — reschedule and cancel links are in your confirmation."
+  />
+
+  <Features2
+    columns={3}
+    items={[
+      {
+        title: 'Email',
+        description: `${CONTACT.email} — the main channel for questions about consultations, preparation and documentation.`,
+        icon: 'tabler:mail',
+        callToAction: { text: 'Send an email', href: `mailto:${CONTACT.email}`, variant: 'link' as const },
+      },
+      {
+        title: 'Phone / WhatsApp',
+        description: `${CONTACT.phoneDisplay} — based in ${CONTACT.location}. Email first for anything detailed.`,
+        icon: 'tabler:phone',
+        callToAction: { text: 'Call now', href: CONTACT.phoneHref, variant: 'link' as const },
+      },
+      {
+        title: 'Instagram',
+        description: instagram ? `${instagram.handle} — research output and updates.` : 'Research output and updates.',
+        icon: 'tabler:brand-instagram',
+        callToAction: instagram
+          ? { text: 'Follow', href: instagram.href, target: '_blank' as const, variant: 'link' as const }
+          : undefined,
+      },
+    ]}
+  />
+
+  <section class="not-prose max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <h2 class="text-3xl md:text-4xl font-bold leading-tighter tracking-tighter mb-2 text-center">Stay in the loop</h2>
+    <p class="text-xl text-muted text-center mb-8">
+      Leave your email and we will send the Consultation Bloodwork Brief and occasional protocol notes.
+    </p>
+    <LeadCapture
+      source="contact-page"
+      buttonText="Keep me posted"
+      successMessage="Done — watch your inbox for the brief."
+      collectName={true}
+    />
+  </section>
+</Layout>

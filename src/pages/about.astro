@@ -1,0 +1,102 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Content from '~/components/widgets/Content.astro';
+import Features from '~/components/widgets/Features.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { CONTACT, SOCIALS, CALENDLY_PROFILE } from '~/data/site';
+
+const metadata = {
+  title: 'About',
+  description:
+    'Christopher Broomhead — evidence-informed protocol design consultations. Bloodwork first, written protocols after every paid session, based in the United Kingdom.',
+};
+
+const instagram = SOCIALS.find((s) => s.label === 'Instagram');
+---
+
+<Layout metadata={metadata}>
+  <Content
+    tagline="About"
+    title="Evidence first. Everything documented."
+    items={[
+      {
+        title: 'The method',
+        description:
+          'Every recommendation starts from your markers — hormonal, metabolic, recovery, cognition, longevity. Bloodwork is reviewed before the call, so the session itself is spent on decisions, not data gathering.',
+      },
+      {
+        title: 'The standard',
+        description:
+          'A consultation is not finished when the call ends. Every paid session closes with a written protocol summary: what was recommended, at what architecture, in what sequence, and what to watch.',
+      },
+      {
+        title: 'The operator',
+        description: `${CONTACT.name} trades as ${CONTACT.tradingAs}, based in ${CONTACT.location}. Consultations are private, one-to-one, and booked through Calendly.`,
+      },
+    ]}
+    image={{
+      src: '~/assets/images/hero-image.png',
+      alt: 'Chris Broomhead consultation workspace',
+    }}
+  >
+    <Fragment slot="content">
+      <p class="text-xl text-muted">
+        This practice exists because most advice in this space is undocumented, untracked and unspecific. The
+        alternative is a simple discipline: review the bloodwork, design the protocol, write it down, review it again on
+        follow-up.
+      </p>
+      {
+        instagram && (
+          <p class="mt-4 text-muted">
+            Follow the research output on{' '}
+            <a href={instagram.href} target="_blank" rel="noopener" class="underline">
+              Instagram ({instagram.handle})
+            </a>
+            .
+          </p>
+        )
+      }
+    </Fragment>
+  </Content>
+
+  <Features
+    tagline="Working together"
+    title="What working with me looks like"
+    items={[
+      {
+        title: 'Private and direct',
+        description: 'Every session is one-to-one. No groups, no junior staff, no handoffs.',
+        icon: 'tabler:user',
+      },
+      {
+        title: 'Documented outcomes',
+        description: 'Written protocol summary after every paid session — 48 to 72 hours, depending on format.',
+        icon: 'tabler:file-check',
+      },
+      {
+        title: 'Follow-up discipline',
+        description: 'Protocols are reviewed against progress and new bloodwork, not left to drift.',
+        icon: 'tabler:refresh',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        text: 'Book a free suitability call',
+        href: CALENDLY_PROFILE,
+        target: '_blank',
+        variant: 'primary',
+        icon: 'tabler:calendar-check',
+      },
+      { text: 'See consultations and prices', href: '/work-with-me' },
+    ]}
+  >
+    <Fragment slot="title">Work with Chris</Fragment>
+    <Fragment slot="subtitle">
+      The fastest route in is the free 15-minute suitability assessment — we check fit and pick the right format
+      together.
+    </Fragment>
+  </CallToAction>
+</Layout>

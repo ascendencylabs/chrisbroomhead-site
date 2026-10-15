@@ -1,0 +1,120 @@
+---
+import { OFFERS } from '~/data/site';
+
+const query = 'hide_gdpr_banner=1&primary_color=c4a060';
+---
+
+<cb-booking data-query={query}>
+  <div class="grid gap-8 lg:grid-cols-[minmax(0,20rem)_1fr]">
+    <nav aria-label="Choose a consultation">
+      <ul class="grid gap-3">
+        {
+          OFFERS.map((offer, i) => (
+            <li id={offer.slug === 'initial-consultation-suitability-assessment' ? 'suitability' : undefined}>
+              <a
+                href={offer.url}
+                data-offer={offer.slug}
+                aria-current={i === 2 ? 'true' : undefined}
+                class="block rounded-xl border border-gray-200 p-4 transition hover:border-primary aria-[current=true]:border-primary aria-[current=true]:ring-1 aria-[current=true]:ring-primary dark:border-slate-700"
+              >
+                <span class="flex items-baseline justify-between gap-3">
+                  <span class="font-semibold text-heading">{offer.shortName}</span>
+                  <span class="font-bold text-heading">{offer.priceLabel}</span>
+                </span>
+                <span class="mt-1 block text-sm text-muted">
+                  {offer.duration}
+                  {offer.existingClientsOnly ? ' · existing clients only' : ''}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-4 text-xs leading-5 text-muted">
+        Paid sessions are paid by card at booking (secure checkout by Stripe inside Calendly). Zoom details arrive in
+        your confirmation email.
+      </p>
+    </nav>
+    <div>
+      <div
+        data-embed
+        class="min-h-[700px] overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-slate-700"
+        aria-live="polite"
+      >
+        <noscript>
+          <p class="p-6">Choose a session on the left to open the booking page.</p>
+        </noscript>
+      </div>
+    </div>
+  </div>
+</cb-booking>
+
+<script>
+  declare global {
+    interface Window {
+      Calendly?: { initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void };
+    }
+  }
+
+  const SCRIPT = 'https://assets.calendly.com/assets/external/widget.js';
+
+  const loadCalendly = (): Promise<void> =>
+    new Promise((resolve, reject) => {
+      if (window.Calendly) return resolve();
+      const existing = document.querySelector<HTMLScriptElement>(`script[src="${SCRIPT}"]`);
+      const script = existing ?? document.createElement('script');
+      script.addEventListener('load', () => resolve());
+      script.addEventListener('error', () => reject(new Error('Calendly failed to load')));
+      if (!existing) {
+        script.src = SCRIPT;
+        script.async = true;
+        document.head.appendChild(script);
+      }
+    });
+
+  class CbBooking extends HTMLElement {
+    connectedCallback() {
+      const links = Array.from(this.querySelectorAll<HTMLAnchorElement>('a[data-offer]'));
+      const embed = this.querySelector<HTMLElement>('[data-embed]')!;
+      const query = this.dataset.query || '';
+
+      const show = async (link: HTMLAnchorElement) => {
+        links.forEach((l) => l.removeAttribute('aria-current'));
+        link.setAttribute('aria-current', 'true');
+        try {
+          await loadCalendly();
+          embed.innerHTML = '';
+          window.Calendly!.initInlineWidget({ url: `${link.href}?${query}`, parentElement: embed });
+        } catch {
+          embed.innerHTML = '';
+          const p = document.createElement('p');
+          p.className = 'p-6';
+          const a = document.createElement('a');
+          a.href = link.href;
+          a.className = 'underline';
+          a.textContent = 'Open the booking page';
+          p.append('The booking calendar could not load here. ', a, '.');
+          embed.append(p);
+        }
+      };
+
+      links.forEach((link) =>
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          history.replaceState(null, '', `#${link.dataset.offer}`);
+          show(link);
+        })
+      );
+
+      const hash = location.hash.replace('#', '');
+      const initial =
+        links.find((l) => l.dataset.offer === hash) ||
+        (hash === 'suitability' ? links[0] : undefined) ||
+        links.find((l) => l.getAttribute('aria-current') === 'true') ||
+        links[0];
+      show(initial);
+    }
+  }
+
+  if (!customElements.get('cb-booking')) customElements.define('cb-booking', CbBooking);
+</script>

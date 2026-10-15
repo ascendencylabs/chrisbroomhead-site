@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Consultation Bloodwork Brief — Chris Broomhead</title>
+    <style>
+      @font-face {
+        font-family: Inter;
+        src: url('Inter-Regular.ttf');
+        font-weight: 400;
+      }
+      @font-face {
+        font-family: Inter;
+        src: url('Inter-Bold.ttf');
+        font-weight: 700;
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }
+      :root {
+        --navy: #090e14;
+        --ink: #18212b;
+        --gold: #b08d57;
+        --muted: #5b6672;
+        --line: #e3e6ea;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        color: var(--ink);
+        font-size: 10.5pt;
+        line-height: 1.5;
+      }
+      .page {
+        width: 210mm;
+        height: 297mm;
+        padding: 22mm 20mm 18mm;
+        position: relative;
+        page-break-after: always;
+        overflow: hidden;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+      .cover {
+        background: var(--navy);
+        color: #f5f6f7;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .kicker {
+        color: var(--gold);
+        font-weight: 700;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 9pt;
+      }
+      h1 {
+        font-size: 40pt;
+        line-height: 1.05;
+        margin: 10mm 0 6mm;
+        letter-spacing: -0.02em;
+      }
+      .rule {
+        width: 28mm;
+        height: 1.2mm;
+        background: var(--gold);
+        margin: 6mm 0;
+      }
+      .cover p.lead {
+        font-size: 13pt;
+        color: #c9cfd6;
+        max-width: 140mm;
+      }
+      .cover .foot {
+        font-size: 9pt;
+        color: #9aa4ae;
+      }
+      h2 {
+        font-size: 20pt;
+        margin: 0 0 2mm;
+        letter-spacing: -0.01em;
+      }
+      h3 {
+        font-size: 11.5pt;
+        margin: 6mm 0 2mm;
+        color: var(--navy);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0 0 6mm;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9.6pt;
+      }
+      th,
+      td {
+        text-align: left;
+        vertical-align: top;
+        padding: 2mm 2.5mm;
+        border-bottom: 0.3mm solid var(--line);
+      }
+      th {
+        font-size: 8.5pt;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+      }
+      td:first-child {
+        font-weight: 700;
+        width: 38%;
+      }
+      ul {
+        margin: 0;
+        padding-left: 0;
+        list-style: none;
+      }
+      li {
+        padding-left: 6mm;
+        position: relative;
+        margin: 1.6mm 0;
+      }
+      li::before {
+        content: '—';
+        position: absolute;
+        left: 0;
+        color: var(--gold);
+      }
+      .box {
+        border: 0.4mm solid var(--gold);
+        border-radius: 2mm;
+        padding: 5mm 6mm;
+        margin-top: 6mm;
+      }
+      .checks li::before {
+        content: '☐';
+        color: var(--navy);
+      }
+      .pfoot {
+        position: absolute;
+        bottom: 9mm;
+        left: 20mm;
+        right: 20mm;
+        font-size: 7.5pt;
+        color: #8a939c;
+        display: flex;
+        justify-content: space-between;
+        border-top: 0.3mm solid var(--line);
+        padding-top: 2mm;
+      }
+      .cta {
+        background: var(--navy);
+        color: #f5f6f7;
+        border-radius: 2mm;
+        padding: 6mm;
+        margin-top: 8mm;
+      }
+      .cta a {
+        color: var(--gold);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .small {
+        font-size: 8pt;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page cover">
+      <div>
+        <div class="kicker">Free guide</div>
+        <h1>The Consultation<br />Bloodwork Brief</h1>
+        <div class="rule"></div>
+        <p class="lead">What to test. How to prepare for the draw. What to gather before any protocol conversation.</p>
+      </div>
+      <div class="foot">
+        Chris Broomhead<br />
+        calendly.com/chrisbroomheadconsultation<br /><br />
+        Educational information only. Not medical advice.
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>Why bloodwork comes first</h2>
+      <p class="sub">A protocol written without data is a guess.</p>
+      <p>
+        Most people start with the compound. The right starting point is your markers. They show where you are, what
+        needs attention first, and how to measure whether anything you change is working.
+      </p>
+      <p>This brief does three things:</p>
+      <ul>
+        <li>Lists the markers worth asking for, grouped by system, with what each one measures.</li>
+        <li>Explains how to prepare so your results are reliable and comparable over time.</li>
+        <li>Gives you the history checklist to complete before a consultation.</li>
+      </ul>
+      <p>
+        It does not tell you what your results mean for you, or what to take. That depends on the full picture. That is
+        what a consultation is for.
+      </p>
+
+      <h3>Where to get tested</h3>
+      <p>
+        Ask your GP first. Some of these markers are routinely available on the NHS when clinically indicated. Anything
+        not covered can be ordered through a private UK blood testing service, usually as a finger-prick kit or a venous
+        draw at a clinic. Venous draws are more reliable for hormones and lipids.
+      </p>
+
+      <div class="box">
+        <strong>One rule:</strong> retest with the same lab, at the same time of day, under the same conditions.
+        Otherwise you are comparing two different measurements, not two points in time.
+      </div>
+      <div class="pfoot">
+        <span>The Consultation Bloodwork Brief</span><span>Educational information only | Not medical advice</span>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>The marker panel</h2>
+      <p class="sub">What to ask for, and what each marker measures.</p>
+
+      <h3>Metabolic health</h3>
+      <table>
+        <tr>
+          <th>Marker</th>
+          <th>What it measures</th>
+        </tr>
+        <tr>
+          <td>Fasting glucose</td>
+          <td>Blood sugar after an overnight fast.</td>
+        </tr>
+        <tr>
+          <td>Fasting insulin</td>
+          <td>How much insulin it takes to hold that glucose level. An early window on insulin sensitivity.</td>
+        </tr>
+        <tr>
+          <td>HbA1c</td>
+          <td>Average blood glucose over roughly the previous two to three months.</td>
+        </tr>
+      </table>
+
+      <h3>Cardiovascular</h3>
+      <table>
+        <tr>
+          <td>Lipid panel</td>
+          <td>Total cholesterol, LDL, HDL and triglycerides.</td>
+        </tr>
+        <tr>
+          <td>ApoB</td>
+          <td>The number of cholesterol-carrying particles that can enter artery walls.</td>
+        </tr>
+        <tr>
+          <td>hs-CRP</td>
+          <td>High-sensitivity C-reactive protein. A marker of low-grade systemic inflammation.</td>
+        </tr>
+      </table>
+
+      <h3>Hormones</h3>
+      <table>
+        <tr>
+          <td>Total and free testosterone</td>
+          <td>Total circulating testosterone, and the unbound fraction available to tissue.</td>
+        </tr>
+        <tr>
+          <td>SHBG</td>
+          <td>Sex hormone binding globulin. Binds testosterone and oestradiol, so it changes how much is free.</td>
+        </tr>
+        <tr>
+          <td>Oestradiol</td>
+          <td>The main oestrogen. Relevant for men and women.</td>
+        </tr>
+        <tr>
+          <td>LH and FSH</td>
+          <td>Pituitary signals that drive your own hormone production.</td>
+        </tr>
+        <tr>
+          <td>Prolactin</td>
+          <td>A pituitary hormone that affects libido, mood and other hormones.</td>
+        </tr>
+      </table>
+      <p class="small">Women: record the day of your cycle. Oestradiol and progesterone results depend on timing.</p>
+
+      <div class="pfoot">
+        <span>The Consultation Bloodwork Brief</span><span>Educational information only | Not medical advice</span>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>The marker panel, continued</h2>
+      <p class="sub">&nbsp;</p>
+
+      <h3>Thyroid</h3>
+      <table>
+        <tr>
+          <th>Marker</th>
+          <th>What it measures</th>
+        </tr>
+        <tr>
+          <td>TSH</td>
+          <td>Thyroid stimulating hormone. The pituitary's signal to the thyroid.</td>
+        </tr>
+        <tr>
+          <td>Free T4 and free T3</td>
+          <td>The thyroid hormones themselves. T3 is the active form.</td>
+        </tr>
+      </table>
+
+      <h3>Liver and kidney</h3>
+      <table>
+        <tr>
+          <td>ALT, AST, GGT</td>
+          <td>Liver enzymes. Raised levels can reflect liver stress. Hard training also raises ALT and AST.</td>
+        </tr>
+        <tr>
+          <td>Creatinine and eGFR</td>
+          <td>Kidney filtration. Creatinine also rises with muscle mass and creatine use.</td>
+        </tr>
+      </table>
+
+      <h3>Blood</h3>
+      <table>
+        <tr>
+          <td>Full blood count</td>
+          <td>Haemoglobin, haematocrit, red cells, white cells and platelets.</td>
+        </tr>
+      </table>
+
+      <h3>Nutrients</h3>
+      <table>
+        <tr>
+          <td>Ferritin</td>
+          <td>Iron stores.</td>
+        </tr>
+        <tr>
+          <td>Vitamin D (25-OH)</td>
+          <td>Vitamin D status.</td>
+        </tr>
+        <tr>
+          <td>Vitamin B12 and folate</td>
+          <td>Needed for red blood cell production and nerve function.</td>
+        </tr>
+      </table>
+
+      <h3>Optional, if relevant to your goal</h3>
+      <table>
+        <tr>
+          <td>IGF-1</td>
+          <td>Insulin-like growth factor 1. Reflects growth hormone activity.</td>
+        </tr>
+        <tr>
+          <td>Morning cortisol</td>
+          <td>The main stress hormone, measured at its daily peak.</td>
+        </tr>
+      </table>
+      <div class="pfoot">
+        <span>The Consultation Bloodwork Brief</span><span>Educational information only | Not medical advice</span>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>How to prepare for the draw</h2>
+      <p class="sub">Small changes in preparation create large changes in results.</p>
+      <ul>
+        <li>
+          <strong>Morning draw.</strong> Book between 7am and 10am. Testosterone and cortisol are highest in the
+          morning.
+        </li>
+        <li>
+          <strong>Fasted.</strong> Nothing but water for 8 to 12 hours beforehand, unless your lab says otherwise.
+        </li>
+        <li><strong>No hard training for 48 hours.</strong> Heavy sessions can raise liver enzymes and creatinine.</li>
+        <li><strong>Hydrate normally.</strong> Dehydration concentrates the blood and skews several markers.</li>
+        <li>
+          <strong>Tell the lab about biotin.</strong> High-dose biotin can interfere with some hormone and thyroid
+          tests.
+        </li>
+        <li>
+          <strong>Log your timing.</strong> If you are running a protocol, note the time of your last dose relative to
+          the draw.
+        </li>
+        <li><strong>Same conditions every time.</strong> Same lab, same time of day, same preparation.</li>
+      </ul>
+
+      <h2 style="margin-top: 10mm">The history checklist</h2>
+      <p class="sub">Have this written down before any consultation.</p>
+      <ul class="checks">
+        <li>Your primary goal, in one sentence, with a timeframe</li>
+        <li>Everything you are currently running: compound, dose, frequency, start date</li>
+        <li>Everything you have run before, and what happened</li>
+        <li>Prescribed medications and supplements</li>
+        <li>Relevant medical history and any diagnosed conditions</li>
+        <li>Side effects you have noticed, and when they started</li>
+        <li>Training, sleep and diet: a short, honest summary</li>
+        <li>Your bloodwork as a PDF, with the reference ranges shown</li>
+      </ul>
+      <div class="pfoot">
+        <span>The Consultation Bloodwork Brief</span><span>Educational information only | Not medical advice</span>
+      </div>
+    </section>
+
+    <section class="page">
+      <h2>What to do with it</h2>
+      <p class="sub">Data only helps if someone reads it properly.</p>
+      <p>Once your bloodwork is back and the checklist is done, you have what a protocol conversation needs.</p>
+      <ul>
+        <li><strong>One specific question?</strong> Protocol Design Consultation, 15 minutes, £50.</li>
+        <li>
+          <strong>A full review of what you are running?</strong> Private Consultation, 30 minutes, £100. Written
+          protocol summary within 48 hours.
+        </li>
+        <li>
+          <strong>A complex case across several systems?</strong> Comprehensive Consultation, 60 minutes, £150.
+          Structured written protocol within 72 hours.
+        </li>
+        <li><strong>Not sure?</strong> Free 15-minute suitability call.</li>
+      </ul>
+      <p>
+        Send your bloodwork and checklist to the email address in your booking confirmation: 48 hours ahead for 30
+        minutes, 72 hours ahead for 60 minutes.
+      </p>
+
+      <div class="cta">
+        <div class="kicker">Book</div>
+        <p style="font-size: 14pt; margin: 3mm 0">Stop guessing. Get the protocol written down.</p>
+        <p style="margin: 0">
+          <a href="https://calendly.com/chrisbroomheadconsultation">calendly.com/chrisbroomheadconsultation</a>
+        </p>
+        <p style="margin: 2mm 0 0; color: #c9cfd6">Questions: admin@chrisbroomheadcoaching.com · +44 7521 052843</p>
+      </div>
+
+      <h3 style="margin-top: 14mm">Important</h3>
+      <p class="small">
+        This guide is general educational information. It is not medical advice and does not create a
+        practitioner–patient relationship. It does not diagnose, treat or prevent any condition. Reference ranges vary
+        between laboratories. Always discuss your results and any changes to your health, medication or protocol with a
+        qualified healthcare provider. If you feel unwell, contact your GP or NHS 111. In an emergency, call 999. © 2026
+        Christopher Broomhead.
+      </p>
+      <div class="pfoot">
+        <span>The Consultation Bloodwork Brief</span><span>Educational information only | Not medical advice</span>
+      </div>
+    </section>
+  </body>
+</html>

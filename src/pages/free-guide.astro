@@ -1,0 +1,58 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features from '~/components/widgets/Features.astro';
+import LeadCapture from '~/components/common/LeadCapture.astro';
+import { LEAD_MAGNET } from '~/data/site';
+
+const metadata = {
+  title: 'Free guide — The Consultation Bloodwork Brief',
+  description:
+    'Free PDF: what bloodwork to send before a protocol design consultation, how to format it, and what happens with it. Download instantly.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Free download"
+    title="The Consultation Bloodwork Brief"
+    subtitle="The exact preparation that makes a paid consultation worth every penny — what markers to send, how to format your history, and what I do with it before we speak."
+  />
+
+  <section class="not-prose max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+    <div class="grid gap-10 lg:grid-cols-2 items-start">
+      <div>
+        <Features
+          classes={{ container: 'lg:pt-0' }}
+          columns={1}
+          items={[
+            {
+              title: 'What to send',
+              description:
+                'The core bloodwork panel that lets selection, dosing architecture and sequencing be decided from evidence instead of guesswork.',
+              icon: 'tabler:file-analytics',
+            },
+            {
+              title: 'How to format your history',
+              description:
+                'A simple structure for current protocols, usage history and questions, so no paid minutes are wasted reconstructing your case.',
+              icon: 'tabler:clipboard-list',
+            },
+            {
+              title: 'What happens with it',
+              description:
+                'How your documentation is reviewed before the call and exactly what lands in the written protocol summary afterwards.',
+              icon: 'tabler:file-check',
+            },
+          ]}
+        />
+      </div>
+      <LeadCapture
+        source="consultation-bloodwork-brief"
+        buttonText="Email me the brief"
+        successMessage="Done — your copy of the brief is ready."
+        downloadHref={LEAD_MAGNET.file}
+      />
+    </div>
+  </section>
+</Layout>

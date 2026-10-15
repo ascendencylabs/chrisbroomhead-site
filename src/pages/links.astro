@@ -1,0 +1,79 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import { SOCIALS, CALENDLY_PROFILE, CONTACT, OFFERS } from '~/data/site';
+
+const metadata = {
+  title: 'Links',
+  description:
+    'Every Chris Broomhead link in one place — consultations, free guide, community, social channels and contact.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText title="Chris Broomhead" subtitle="Protocol design consultations. Every link that matters, one page." />
+
+  <section class="not-prose max-w-md mx-auto px-4 sm:px-6 pb-16">
+    <div class="flex flex-col gap-4">
+      <a
+        href="/book"
+        class="flex items-center justify-between rounded-xl border border-primary bg-primary/10 px-5 py-4 font-semibold hover:bg-primary/20 transition"
+      >
+        <span>Book a consultation</span>
+        <span class="text-sm text-muted">from free</span>
+      </a>
+      {
+        OFFERS.slice(0, 2).map((offer) => (
+          <a
+            href={offer.url}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 font-semibold hover:border-primary transition"
+          >
+            <span>{offer.shortName}</span>
+            <span class="text-sm text-muted">
+              {offer.duration} · {offer.priceLabel}
+            </span>
+          </a>
+        ))
+      }
+      <a
+        href="/free-guide"
+        class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 font-semibold hover:border-primary transition"
+      >
+        <span>Free Bloodwork Brief</span>
+        <span class="text-sm text-muted">PDF download</span>
+      </a>
+      <a
+        href="/community"
+        class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 font-semibold hover:border-primary transition"
+      >
+        <span>Community waitlist</span>
+        <span class="text-sm text-muted">Skool — opening soon</span>
+      </a>
+      {
+        SOCIALS.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 font-semibold hover:border-primary transition"
+          >
+            <span>{social.label}</span>
+            <span class="text-sm text-muted">{social.handle}</span>
+          </a>
+        ))
+      }
+      <a
+        href={`mailto:${CONTACT.email}`}
+        class="flex items-center justify-between rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 font-semibold hover:border-primary transition"
+      >
+        <span>Email</span>
+        <span class="text-sm text-muted">{CONTACT.email}</span>
+      </a>
+    </div>
+    <p class="mt-8 text-center text-sm text-muted">
+      Consultations · <a href={CALENDLY_PROFILE} target="_blank" class="underline">Calendly</a> · {CONTACT.location}
+    </p>
+  </section>
+</Layout>

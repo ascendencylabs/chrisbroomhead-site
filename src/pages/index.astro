@@ -1,0 +1,211 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Image from '~/components/common/Image.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+import OfferCards from '~/components/site/OfferCards.astro';
+import StructuredData from '~/components/common/StructuredData.astro';
+import portrait from '~/assets/images/chris-portrait.jpg';
+import { getPermalink } from '~/utils/permalinks';
+import { SITE } from 'astrowind:config';
+import { CONTACT, SOCIALS, OFFERS } from '~/data/site';
+
+const metadata = {
+  title: 'Chris Broomhead — Protocol Design Consultations',
+  ignoreTitleTemplate: true,
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': `${SITE.site}/#person`,
+      name: CONTACT.name,
+      alternateName: 'Chris Broomhead',
+      url: SITE.site,
+      email: `mailto:${CONTACT.email}`,
+      telephone: CONTACT.phoneHref.replace('tel:', ''),
+      sameAs: SOCIALS.map((s) => s.href),
+    },
+    {
+      '@type': 'ProfessionalService',
+      name: CONTACT.tradingAs,
+      url: SITE.site,
+      provider: { '@id': `${SITE.site}/#person` },
+      areaServed: 'Worldwide (online)',
+      makesOffer: OFFERS.filter((o) => !o.existingClientsOnly).map((o) => ({
+        '@type': 'Offer',
+        name: o.name,
+        price: o.price,
+        priceCurrency: 'GBP',
+        url: o.url,
+      })),
+    },
+  ],
+};
+---
+
+<Layout metadata={metadata}>
+  <StructuredData slot="head" schema={structuredData} />
+
+  <section class="relative not-prose md:-mt-[76px]">
+    <div
+      class="mx-auto grid max-w-7xl items-center gap-10 px-4 pt-8 pb-12 sm:px-6 md:pt-[124px] md:pb-20 lg:grid-cols-[1.1fr_0.9fr]"
+    >
+      <div>
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">
+          Protocol design consultations
+        </p>
+        <h1 class="mt-4 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-6xl">
+          You don't need more compounds.
+          <span class="block text-accent dark:text-primary">You need a protocol built on your bloodwork.</span>
+        </h1>
+        <p class="mt-6 max-w-xl text-lg leading-8 text-muted dark:text-slate-300">
+          Private Zoom consultations with Chris Broomhead. Your bloodwork and history are reviewed before the call.
+          Every paid session ends with a written summary of your protocol. From £50, booked and paid online in two
+          minutes.
+        </p>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a class="btn-primary" href={getPermalink('/book')}>Book a consultation</a>
+          <a class="btn-secondary" href={getPermalink('/free-guide')}>Get the free Bloodwork Brief</a>
+        </div>
+        <p class="mt-6 text-sm text-muted">
+          Free 15-minute suitability call available. Paid sessions £50, £100 and £150.
+        </p>
+      </div>
+      <div class="mx-auto w-full max-w-md lg:max-w-none">
+        <Image
+          src={portrait}
+          alt="Chris Broomhead in a navy shirt, standing against a corrugated metal wall"
+          class="aspect-[4/5] w-full rounded-2xl object-cover object-top shadow-xl"
+          widths={[400, 640, 900]}
+          sizes="(max-width: 1023px) 90vw, 560px"
+          width={900}
+          height={1125}
+          loading="eager"
+          fetchpriority="high"
+          format="webp"
+        />
+      </div>
+    </div>
+  </section>
+
+  <WidgetWrapper id="consultations" containerClass="max-w-7xl mx-auto">
+    <Headline
+      tagline="Work with me"
+      title="Four ways in. Clear prices."
+      subtitle="Not sure which one? Start with the free 15-minute suitability call and you will be pointed to the right format."
+    />
+    <OfferCards />
+    <p class="mt-8 text-center text-sm text-muted">
+      Already a client? <a class="underline" href={getPermalink('/book#follow-up-review')}
+        >Book a £50 follow-up review</a
+      >. Full details on the <a class="underline" href={getPermalink('/work-with-me')}>Work with me</a> page.
+    </p>
+  </WidgetWrapper>
+
+  <Steps2
+    tagline="How it works"
+    title="From booking to written protocol"
+    subtitle="The work starts before the call. That is why the call is worth paying for."
+    callToAction={{ variant: 'primary', text: 'Choose a session', href: getPermalink('/book') }}
+    items={[
+      {
+        title: '1. Book and pay online',
+        description: 'Pick a time that suits you. Payment is taken securely at booking. Zoom details arrive by email.',
+        icon: 'tabler:calendar-check',
+      },
+      {
+        title: '2. Send your data',
+        description:
+          'Bloodwork, current protocols and usage history. 48 hours ahead for a 30-minute session, 72 hours for 60 minutes.',
+        icon: 'tabler:file-description',
+      },
+      {
+        title: '3. The consultation',
+        description:
+          'Selection, dosing architecture, sequencing, ancillary support. Built on your data, not guesswork.',
+        icon: 'tabler:video',
+      },
+      {
+        title: '4. Written protocol',
+        description:
+          'A written summary after every paid session. Within 48 hours for 30 minutes, 72 hours for 60 minutes.',
+        icon: 'tabler:clipboard-text',
+      },
+    ]}
+  />
+
+  <WidgetWrapper id="why" containerClass="max-w-5xl mx-auto">
+    <Headline tagline="The problem" title="Most people collect compounds. Few run a protocol." />
+    <div class="grid gap-8 md:grid-cols-3">
+      <div>
+        <p class="text-lg font-semibold text-heading">Conflicting information</p>
+        <p class="mt-2 leading-7">
+          Every forum gives a different dose. Every video gives a different stack. You end up going in circles.
+        </p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-heading">No data behind the plan</p>
+        <p class="mt-2 leading-7">
+          A protocol written without bloodwork is a guess. Your markers decide what to change, and in what order.
+        </p>
+      </div>
+      <div>
+        <p class="text-lg font-semibold text-heading">Nobody to ask</p>
+        <p class="mt-2 leading-7">
+          You want a straight answer from someone who does this every week. That is what a consultation is for.
+        </p>
+      </div>
+    </div>
+  </WidgetWrapper>
+
+  <FAQs
+    tagline="Questions"
+    title="Before you book"
+    items={[
+      {
+        title: 'Is this medical advice?',
+        description:
+          'No. Consultations are educational and evidence-informed. They do not diagnose or treat any condition. Make decisions about implementation with your healthcare provider.',
+      },
+      {
+        title: 'Which session should I book?',
+        description:
+          'One specific question: the 15-minute protocol design session (£50). A full review of what you are running: 30 minutes (£100). A complex, multi-system case: 60 minutes (£150). Unsure: the free suitability call.',
+      },
+      {
+        title: 'Do I need bloodwork first?',
+        description:
+          'For the 30- and 60-minute sessions, yes. Recent bloodwork makes the session far more useful. The free Bloodwork Brief lists what to ask for.',
+      },
+      {
+        title: 'How do I pay?',
+        description:
+          'By card when you book. Checkout is handled by Stripe inside the Calendly booking page. Prices are in GBP.',
+      },
+      {
+        title: 'Where are you based?',
+        description: 'The United Kingdom. Every session runs on Zoom, so you can book from anywhere.',
+      },
+      {
+        title: 'Can I reschedule?',
+        description:
+          'Yes. Your confirmation email has a reschedule link. For anything else, email admin@chrisbroomheadcoaching.com.',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Stop guessing. Get the protocol written down."
+    subtitle="Free 15-minute suitability call, or go straight to a paid session from £50."
+    actions={[
+      { variant: 'primary', text: 'Book a consultation', href: getPermalink('/book') },
+      { text: 'Free suitability call', href: getPermalink('/book#suitability') },
+    ]}
+  />
+</Layout>

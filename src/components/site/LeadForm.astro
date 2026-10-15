@@ -1,0 +1,142 @@
+---
+import { LEADS_ENDPOINT } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+export interface Props {
+  /** Stored in leads.guide and used to pick the success message. */
+  guide: string;
+  tags: string[];
+  buttonText: string;
+  successTitle: string;
+  successBody: string;
+  /** Optional download revealed after a successful submit. */
+  downloadHref?: string;
+  downloadText?: string;
+}
+
+const { guide, tags, buttonText, successTitle, successBody, downloadHref, downloadText } = Astro.props;
+const formId = `lead-${guide}`;
+---
+
+<cb-lead-form
+  data-endpoint={LEADS_ENDPOINT.url}
+  data-key={LEADS_ENDPOINT.anonKey}
+  data-guide={guide}
+  data-tags={JSON.stringify(tags)}
+>
+  <form id={formId} class="grid gap-4" novalidate>
+    <div>
+      <label for={`${formId}-name`} class="block text-sm font-medium">First name</label>
+      <input
+        id={`${formId}-name`}
+        name="name"
+        type="text"
+        autocomplete="given-name"
+        required
+        maxlength="80"
+        class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+      />
+    </div>
+    <div>
+      <label for={`${formId}-email`} class="block text-sm font-medium">Email</label>
+      <input
+        id={`${formId}-email`}
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+        maxlength="160"
+        class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
+      />
+    </div>
+    <!-- Honeypot: humans never see or fill this. -->
+    <div class="hidden" aria-hidden="true">
+      <label>Leave empty <input name="company" type="text" tabindex="-1" autocomplete="off" /></label>
+    </div>
+    <p class="text-xs leading-5 text-muted">
+      By submitting you agree to receive this and occasional related emails from Christopher Broomhead. See the
+      <a class="underline" href={getPermalink('/privacy')}>privacy notice</a>.
+    </p>
+    <button type="submit" class="btn-primary w-full">{buttonText}</button>
+    <p class="text-sm text-red-600 dark:text-red-400" role="alert" data-error hidden></p>
+  </form>
+  <div data-success hidden tabindex="-1" class="rounded-xl border border-primary/40 bg-primary/5 p-6">
+    <p class="text-lg font-bold text-heading">{successTitle}</p>
+    <p class="mt-2 text-sm leading-6">{successBody}</p>
+    {
+      downloadHref && (
+        <a class="btn-primary mt-4" href={downloadHref} download>
+          {downloadText}
+        </a>
+      )
+    }
+  </div>
+</cb-lead-form>
+
+<script>
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  class CbLeadForm extends HTMLElement {
+    connectedCallback() {
+      const form = this.querySelector('form');
+      if (!form || form.dataset.bound) return;
+      form.dataset.bound = '1';
+      form.addEventListener('submit', (e) => this.submit(e, form));
+    }
+
+    async submit(e: SubmitEvent, form: HTMLFormElement) {
+      e.preventDefault();
+      const errorEl = this.querySelector<HTMLElement>('[data-error]')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      const data = new FormData(form);
+      const name = String(data.get('name') || '').trim();
+      const email = String(data.get('email') || '')
+        .trim()
+        .toLowerCase();
+
+      if (data.get('company')) return this.done(form);
+      if (!name) return this.fail(errorEl, 'Please add your first name.');
+      if (!EMAIL.test(email)) return this.fail(errorEl, 'Please enter a valid email address.');
+
+      button.disabled = true;
+      errorEl.hidden = true;
+      try {
+        const res = await fetch(this.dataset.endpoint!, {
+          method: 'POST',
+          headers: {
+            apikey: this.dataset.key!,
+            Authorization: `Bearer ${this.dataset.key}`,
+            'Content-Type': 'application/json',
+            Prefer: 'return=minimal',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            source: `chrisbroomhead-site:${location.pathname}`,
+            guide: this.dataset.guide,
+            tags: JSON.parse(this.dataset.tags || '[]'),
+          }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        this.done(form);
+      } catch {
+        button.disabled = false;
+        this.fail(errorEl, 'That did not go through. Please try again, or email admin@chrisbroomheadcoaching.com.');
+      }
+    }
+
+    fail(el: HTMLElement, message: string) {
+      el.textContent = message;
+      el.hidden = false;
+    }
+
+    done(form: HTMLFormElement) {
+      form.hidden = true;
+      const success = this.querySelector<HTMLElement>('[data-success]')!;
+      success.hidden = false;
+      success.focus();
+    }
+  }
+
+  if (!customElements.get('cb-lead-form')) customElements.define('cb-lead-form', CbLeadForm);
+</script>
