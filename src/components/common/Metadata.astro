@@ -7,6 +7,7 @@ import type { SEOProps } from 'astro-seo';
 import { SITE, METADATA, I18N } from 'astrowind:config';
 import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
+import { cleanPath } from '~/config/streams';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
@@ -17,7 +18,8 @@ export interface Props extends MetaData {
 const {
   title,
   ignoreTitleTemplate = false,
-  canonical = String(getCanonical(String(Astro.url.pathname))),
+  // cleanPath: pages are emitted as page.html (build.format 'file'); canonical URLs stay extensionless.
+  canonical = String(getCanonical(cleanPath(String(Astro.url.pathname)))),
   robots = {},
   description,
   openGraph = {},

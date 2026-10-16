@@ -207,7 +207,14 @@ export const HIDDEN_PATHS: string[] = STREAMS.filter((s) => !s.launched).map((s)
 /** Internal-only pages that are never listed anywhere. */
 export const INTERNAL_PATHS: string[] = ['/streams'];
 
-const norm = (p: string) => p.replace(/\/+$/, '') || '/';
+/** Normalise a pathname: drop `.html`, a trailing `/index` and trailing slashes. */
+export const cleanPath = (p: string): string =>
+  p
+    .replace(/\.html$/, '')
+    .replace(/\/index$/, '')
+    .replace(/\/+$/, '') || '/';
+
+const norm = cleanPath;
 
 /** True when `pathname` (with or without base path) belongs to a hidden stream. */
 export const isHiddenPath = (pathname: string): boolean => {

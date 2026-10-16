@@ -2,10 +2,11 @@
 import { headerLinks, menuLinks } from '~/navigation';
 import { getHomePermalink, getPermalink } from '~/utils/permalinks';
 import { CONTACT } from '~/data/site';
+import { cleanPath } from '~/config/streams';
 
-const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const path = cleanPath(Astro.url.pathname);
 const isCurrent = (href: string) => {
-  const h = href.replace(/\/+$/, '') || '/';
+  const h = cleanPath(href);
   return h === path ? 'page' : undefined;
 };
 ---
