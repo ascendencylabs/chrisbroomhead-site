@@ -30,7 +30,7 @@ const written: Record<string, string> = {
   </div>
   {
     offers.map((o, i) => (
-      <article
+      <div
         role="listitem"
         id={o.slug}
         class="ledger__row spot"
@@ -84,7 +84,7 @@ const written: Record<string, string> = {
             </span>
           </a>
         </div>
-      </article>
+      </div>
     ))
   }
 </div>

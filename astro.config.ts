@@ -27,6 +27,9 @@ const whenExternalScripts = (items: (() => AstroIntegration) | (() => AstroInteg
 export default defineConfig({
   output: 'static',
 
+  // Inline page CSS (≈6 kB gzipped) so first paint never waits on a stylesheet request.
+  build: { inlineStylesheets: 'always' },
+
   // Prefetch links as they enter the viewport for snappier navigations
   // (works together with <ClientRouter />, which enables prefetch by default).
   prefetch: {
