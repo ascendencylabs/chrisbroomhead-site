@@ -13,6 +13,7 @@ import ProtocolDoc from '~/components/site/ProtocolDoc.astro';
 import Manifesto from '~/components/site/Manifesto.astro';
 import LeadForm from '~/components/site/LeadForm.astro';
 import Faq from '~/components/site/Faq.astro';
+import SocialStrip from '~/components/site/SocialStrip.astro';
 import portrait from '~/assets/images/chris-navy.jpg';
 import profileWide from '~/assets/images/chris-profile-wide.jpg';
 import { getAsset, getPermalink } from '~/utils/permalinks';
@@ -342,8 +343,10 @@ const heroLines = [
     </div>
   </section>
 
+  <SocialStrip label="Follow along" />
+
   <!-- §07 Questions -->
-  <section class="section pt-0" aria-labelledby="faq-title">
+  <section class="section" aria-labelledby="faq-title">
     <div class="wrap grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20">
       <SectionHead idx="07" label="Questions">
         <span id="faq-title">Before you book.</span>

@@ -177,8 +177,8 @@ export const STREAMS: Stream[] = [
     launched: false,
     leadSource: 'stream:media',
     needsToLaunch: [
-      'Verify ownership of each channel (youtube.com/@ChrisBroomhead is unverified) and add it in src/config/partners.ts → MEDIA_CHANNELS.',
-      'At least one published episode or video to show.',
+      'YouTube @ChrisBroomhead is confirmed and listed (src/config/socials.ts), but it holds one unrelated old video.',
+      'Publish at least one education video or podcast episode, then set launched: true.',
     ],
   },
   {

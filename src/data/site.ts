@@ -1,3 +1,5 @@
+import { VISIBLE_SOCIALS } from '~/config/socials';
+
 // Single source of truth for everything a visitor can buy, book or follow.
 // Prices are copied from the live Calendly booking pages (checked 16 Oct 2026).
 // Calendly takes payment at booking via the Chris Broomhead Coaching Stripe account.
@@ -123,14 +125,8 @@ export const CONTACT = {
   location: 'United Kingdom',
 };
 
-export const SOCIALS = [
-  {
-    label: 'Instagram',
-    handle: '@chris_broomhead_research',
-    href: 'https://www.instagram.com/chris_broomhead_research/',
-    icon: 'tabler:brand-instagram',
-  },
-];
+// Social profiles live in src/config/socials.ts (verified + showOnSite flags).
+export const SOCIALS = VISIBLE_SOCIALS.map((s) => ({ label: s.label, handle: s.handle, href: s.url, icon: s.icon }));
 
 // Public, insert-only endpoint. Row-level security on `leads` allows the anon
 // role to INSERT and nothing else, so this key cannot read any lead.

@@ -6,7 +6,7 @@ import CtaButton from '~/components/site/CtaButton.astro';
 import Image from '~/components/common/Image.astro';
 import athlete from '~/assets/images/chris-athlete.jpg';
 import profile from '~/assets/images/chris-profile.jpg';
-import { SOCIALS } from '~/data/site';
+import { socialById } from '~/config/socials';
 import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -19,6 +19,8 @@ const metadata = {
 // Thailand; a friend looked after him every night for two weeks; his mental and
 // physical health declined afterwards; the recovery is the story he tells in
 // order on Instagram. Nothing else is added.
+const ig = socialById('instagram');
+
 const chapters = [
   {
     n: '01',
@@ -107,7 +109,13 @@ const chapters = [
         </p>
         <div class="mt-10 flex flex-col gap-4 sm:flex-row" data-reveal>
           <CtaButton href={getPermalink('/work-with-me')}>See the consultations</CtaButton>
-          {SOCIALS.map((s) => <CtaButton href={s.href} variant="ghost" external>{`Follow ${s.handle}`}</CtaButton>)}
+          {
+            ig && ig.verified && (
+              <CtaButton href={ig.url} variant="ghost" external>
+                {`Follow ${ig.handle}`}
+              </CtaButton>
+            )
+          }
         </div>
       </div>
     </div>

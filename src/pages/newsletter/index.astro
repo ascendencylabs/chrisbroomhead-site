@@ -4,6 +4,10 @@ import PageHero from '~/components/site/PageHero.astro';
 import SectionHead from '~/components/site/SectionHead.astro';
 import LeadForm from '~/components/site/LeadForm.astro';
 import { streamById } from '~/config/streams';
+import { socialById } from '~/config/socials';
+
+// Until the Substack publication exists, "read on Substack" points at Chris's Substack profile.
+const substack = socialById('substack');
 
 const metadata = {
   title: "The Operator's Lab — newsletter",
@@ -79,6 +83,16 @@ const pillars = [
             successBody="The first issue comes straight to your inbox."
           />
         </div>
+        {
+          substack && substack.verified && substack.showOnSite && (
+            <p class="mt-6 text-sm">
+              Prefer Substack?{' '}
+              <a class="link-u" href={substack.url} target="_blank" rel="me noopener">
+                Read on Substack ↗
+              </a>
+            </p>
+          )
+        }
       </div>
     </div>
   </section>

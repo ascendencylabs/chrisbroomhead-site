@@ -21,15 +21,4 @@ export const BLOODWORK_PROVIDERS: BloodworkProvider[] = [
   { name: 'London Medical Laboratory', url: 'https://www.londonmedicallaboratory.com', affiliateUrl: '' },
 ];
 
-// MEDIA_CHANNELS: only channels whose ownership is verified. The YouTube handle
-// youtube.com/@ChrisBroomhead exists but has no videos and its ownership is
-// unverified, so it is deliberately not listed.
-
-export interface MediaChannel {
-  platform: 'YouTube' | 'Podcast' | 'Instagram' | 'TikTok' | 'Substack';
-  handle: string;
-  url: string;
-  description: string;
-}
-
-export const MEDIA_CHANNELS: MediaChannel[] = [];
+// Media channels come from src/config/socials.ts (verified + showOnSite).

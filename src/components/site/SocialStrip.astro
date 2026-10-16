@@ -1,0 +1,39 @@
+---
+// Verified social profiles (src/config/socials.ts) as a quiet strip.
+// No product or peptide copy sits next to these links by design.
+import { Icon } from 'astro-icon/components';
+import { VISIBLE_SOCIALS } from '~/config/socials';
+
+export interface Props {
+  label?: string;
+}
+const { label = 'Elsewhere' } = Astro.props;
+---
+
+{
+  VISIBLE_SOCIALS.length > 0 && (
+    <section class="section--tight border-y border-[var(--cb-line)]" aria-label="Social profiles">
+      <div class="wrap flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <p class="eyebrow">
+          <span class="idx">→</span> {label}
+        </p>
+        <ul class="flex flex-wrap gap-3">
+          {VISIBLE_SOCIALS.map((s) => (
+            <li>
+              <a
+                href={s.url}
+                target="_blank"
+                rel="me noopener"
+                class="spot relative inline-flex items-center gap-3 rounded-full px-5 py-3 text-[var(--cb-ink)] no-underline shadow-[inset_0_0_0_1px_var(--cb-line-strong)] transition hover:bg-[rgb(236_232_225/0.05)]"
+              >
+                <Icon name={s.icon} class="h-5 w-5 text-[var(--cb-amber)]" aria-hidden="true" />
+                <span class="font-medium">{s.label}</span>
+                <span class="meta">{s.handle}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
