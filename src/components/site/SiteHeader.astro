@@ -13,18 +13,15 @@ const isCurrent = (href: string) => {
 
 <header class="cb-header" data-header data-scrolled="false">
   <div class="wrap flex h-[4.5rem] items-center justify-between gap-6">
-    <a
-      href={getHomePermalink()}
-      class="group flex items-center gap-3 text-[var(--cb-ink)] no-underline"
-      aria-label="CB, Chris Broomhead, home"
-    >
+    <a href={getHomePermalink()} class="group flex items-center gap-3 text-[var(--cb-ink)] no-underline">
       <span
         class="grid h-9 w-9 place-items-center rounded-full font-semibold tracking-tight shadow-[inset_0_0_0_1px_var(--cb-line-strong)] transition group-hover:shadow-[inset_0_0_0_1px_var(--cb-amber)]"
         aria-hidden="true">CB</span
       >
+      <span class="sr-only sm:hidden">Chris Broomhead</span>
       <span class="hidden leading-none sm:block">
         <span class="block text-[0.95rem] font-semibold tracking-tight">Chris Broomhead</span>
-        <span class="meta mt-1 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.14em]">
+        <span class="meta mt-1 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.14em]" aria-hidden="true">
           <span class="pip" aria-hidden="true"></span> Booking open · Zoom
         </span>
       </span>

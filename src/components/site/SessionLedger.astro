@@ -7,9 +7,11 @@ import { getPermalink } from '~/utils/permalinks';
 export interface Props {
   includeExistingClients?: boolean;
   detailed?: boolean;
+  /** Scroll-reveal rows. Off where the ledger sits above the fold. */
+  reveal?: boolean;
 }
 
-const { includeExistingClients = true, detailed = false } = Astro.props;
+const { includeExistingClients = true, detailed = false, reveal = true } = Astro.props;
 const offers: Offer[] = OFFERS.filter((o) => includeExistingClients || !o.existingClientsOnly);
 
 const written: Record<string, string> = {
@@ -35,7 +37,7 @@ const written: Record<string, string> = {
         id={o.slug}
         class="ledger__row spot"
         data-highlight={o.highlight ? 'true' : undefined}
-        data-reveal
+        data-reveal={reveal ? '' : undefined}
         style={`--d:${i}`}
       >
         <p class="meta pt-1">S-{String(i).padStart(2, '0')}</p>
