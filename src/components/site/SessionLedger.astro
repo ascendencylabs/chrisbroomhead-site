@@ -76,7 +76,7 @@ const written: Record<string, string> = {
           <a
             href={getPermalink(`/book#${o.slug}`)}
             class:list={['btn-cb !min-h-[2.9rem] text-[0.92rem]', !o.highlight && 'btn-cb--ghost']}
-            aria-label={`Book: ${o.name} (${o.priceLabel})`}
+            aria-label={`${o.price === 0 ? 'Book free call' : 'Book'}: ${o.name}, ${o.priceLabel}`}
           >
             <span>{o.price === 0 ? 'Book free call' : 'Book'}</span>
             <span class="btn-cb__icon !h-9 !w-9" aria-hidden="true">

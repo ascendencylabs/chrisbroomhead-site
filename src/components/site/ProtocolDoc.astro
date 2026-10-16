@@ -20,7 +20,7 @@ const sections = [
   <div class="flex items-start justify-between gap-6">
     <div>
       <p class="meta uppercase tracking-[0.14em]">Written protocol · illustrative</p>
-      <h3 class="mt-2 text-2xl font-semibold tracking-tight">Protocol summary</h3>
+      <p class="mt-2 text-2xl font-semibold tracking-tight text-[#121311]">Protocol summary</p>
     </div>
     <p class="meta text-right">Ref. CB-0000<br />Prepared after consultation</p>
   </div>
@@ -30,7 +30,7 @@ const sections = [
         <div class="doc__row">
           <p class="meta pt-0.5">{s.n.padStart(2, '0')}</p>
           <div>
-            <h4 class="font-semibold tracking-tight">{s.title}</h4>
+            <p class="font-semibold tracking-tight text-[#121311]">{s.title}</p>
             <p class="meta mt-0.5">{s.note}</p>
             {s.bars.map((w, i) => (
               <span class:list={['redact', i > 0 && 'redact--soft']} style={`width:${w * 100}%`} aria-hidden="true" />
