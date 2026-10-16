@@ -218,11 +218,12 @@ export function mountField(host: HTMLElement, { still }: FieldOptions): void {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uRes, w, h);
     gl.uniform1f(uDpr, dpr);
-    const wide = w / h > 1.1;
+    const aspect = w / h;
     // Desktop: chain sits upper right behind the portrait column.
-    // Phones: centred in the upper half, scaled to the narrow viewport.
-    gl.uniform2f(uOffset, wide ? 8.5 : 0.8, wide ? 0.6 : 5.2);
-    gl.uniform1f(uScale, wide ? 0.95 : 0.5);
+    // Tablet: lower right, clear of the headline. Phones: small, upper right.
+    const [ox, oy, scale] = aspect > 1.1 ? [8.5, 0.6, 0.95] : aspect > 0.6 ? [7.8, -3.0, 0.68] : [0.8, 5.2, 0.5];
+    gl.uniform2f(uOffset, ox, oy);
+    gl.uniform1f(uScale, scale);
   };
   resize();
   new ResizeObserver(resize).observe(host);
