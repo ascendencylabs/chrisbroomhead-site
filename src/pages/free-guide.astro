@@ -1,58 +1,53 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import Features from '~/components/widgets/Features.astro';
-import LeadCapture from '~/components/common/LeadCapture.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import LeadForm from '~/components/site/LeadForm.astro';
 import { LEAD_MAGNET } from '~/data/site';
+import { getAsset, getPermalink } from '~/utils/permalinks';
 
 const metadata = {
-  title: 'Free guide — The Consultation Bloodwork Brief',
+  title: 'Free guide: The Consultation Bloodwork Brief',
   description:
-    'Free PDF: what bloodwork to send before a protocol design consultation, how to format it, and what happens with it. Download instantly.',
+    'The bloodwork markers to ask for, how to prepare for the test, and what to gather before any protocol conversation. Free PDF.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <HeroText
-    tagline="Free download"
-    title="The Consultation Bloodwork Brief"
-    subtitle="The exact preparation that makes a paid consultation worth every penny — what markers to send, how to format your history, and what I do with it before we speak."
-  />
-
-  <section class="not-prose max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-    <div class="grid gap-10 lg:grid-cols-2 items-start">
+  <WidgetWrapper containerClass="max-w-6xl mx-auto">
+    <div class="grid items-start gap-12 lg:grid-cols-2">
       <div>
-        <Features
-          classes={{ container: 'lg:pt-0' }}
-          columns={1}
-          items={[
-            {
-              title: 'What to send',
-              description:
-                'The core bloodwork panel that lets selection, dosing architecture and sequencing be decided from evidence instead of guesswork.',
-              icon: 'tabler:file-analytics',
-            },
-            {
-              title: 'How to format your history',
-              description:
-                'A simple structure for current protocols, usage history and questions, so no paid minutes are wasted reconstructing your case.',
-              icon: 'tabler:clipboard-list',
-            },
-            {
-              title: 'What happens with it',
-              description:
-                'How your documentation is reviewed before the call and exactly what lands in the written protocol summary afterwards.',
-              icon: 'tabler:file-check',
-            },
-          ]}
-        />
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">Free PDF</p>
+        <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
+          {LEAD_MAGNET.title}
+        </h1>
+        <p class="mt-6 text-lg leading-8">
+          A protocol written without bloodwork is a guess. This brief tells you exactly what to ask for, how to prepare for
+          the draw, and what to have ready before a consultation.
+        </p>
+        <ul class="mt-6 space-y-3 leading-7">
+          <li>— The marker panel, grouped by system, with what each one measures</li>
+          <li>— How to prepare so your results are comparable test to test</li>
+          <li>— The history checklist: protocols, doses, timelines, medications</li>
+          <li>— How to send it all before a session</li>
+        </ul>
+        <p class="mt-6 text-sm text-muted">Educational information only. Not medical advice.</p>
       </div>
-      <LeadCapture
-        source="consultation-bloodwork-brief"
-        buttonText="Email me the brief"
-        successMessage="Done — your copy of the brief is ready."
-        downloadHref={LEAD_MAGNET.file}
-      />
+      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/60 md:p-8">
+        <p class="text-xl font-bold text-heading">Send me the brief</p>
+        <p class="mt-1 mb-6 text-sm text-muted">The download opens straight after you submit.</p>
+        <LeadForm
+          guide={LEAD_MAGNET.guideId}
+          tags={['lead-magnet', 'bloodwork-brief', 'website']}
+          buttonText="Get the free brief"
+          successTitle="Done. Your brief is ready."
+          successBody="Download it below. When your bloodwork is back, book a session and send it over 48 to 72 hours before the call."
+          downloadHref={getAsset(LEAD_MAGNET.file)}
+          downloadText="Download the PDF"
+        />
+        <p class="mt-6 text-sm">
+          Already have your bloodwork? <a class="underline" href={getPermalink('/book')}>Book a consultation</a>.
+        </p>
+      </div>
     </div>
-  </section>
+  </WidgetWrapper>
 </Layout>

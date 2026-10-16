@@ -1,62 +1,59 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import Features2 from '~/components/widgets/Features2.astro';
-import LeadCapture from '~/components/common/LeadCapture.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import { Icon } from 'astro-icon/components';
 import { CONTACT, SOCIALS } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
   title: 'Contact',
-  description:
-    'Contact Chris Broomhead Coaching — email, phone and social. Fastest response is by email; bookings go through Calendly.',
+  description: 'Contact Christopher Broomhead by email or phone, or book a consultation online.',
 };
 
-const instagram = SOCIALS.find((s) => s.label === 'Instagram');
+const cards = [
+  { label: 'Email', value: CONTACT.email, href: `mailto:${CONTACT.email}`, icon: 'tabler:mail' },
+  { label: 'Phone', value: CONTACT.phoneDisplay, href: CONTACT.phoneHref, icon: 'tabler:phone' },
+  {
+    label: 'Book online',
+    value: 'Free 15-minute call or paid sessions from £50',
+    href: getPermalink('/book'),
+    icon: 'tabler:calendar',
+  },
+  ...SOCIALS.map((s) => ({ label: s.label, value: s.handle, href: s.href, icon: s.icon, external: true })),
+];
 ---
 
 <Layout metadata={metadata}>
-  <HeroText
-    tagline="Contact"
-    title="Get in touch"
-    subtitle="Fastest response is by email. For anything booking-related, Calendly self-service is quickest — reschedule and cancel links are in your confirmation."
-  />
-
-  <Features2
-    columns={3}
-    items={[
-      {
-        title: 'Email',
-        description: `${CONTACT.email} — the main channel for questions about consultations, preparation and documentation.`,
-        icon: 'tabler:mail',
-        callToAction: { text: 'Send an email', href: `mailto:${CONTACT.email}`, variant: 'link' as const },
-      },
-      {
-        title: 'Phone / WhatsApp',
-        description: `${CONTACT.phoneDisplay} — based in ${CONTACT.location}. Email first for anything detailed.`,
-        icon: 'tabler:phone',
-        callToAction: { text: 'Call now', href: CONTACT.phoneHref, variant: 'link' as const },
-      },
-      {
-        title: 'Instagram',
-        description: instagram ? `${instagram.handle} — research output and updates.` : 'Research output and updates.',
-        icon: 'tabler:brand-instagram',
-        callToAction: instagram
-          ? { text: 'Follow', href: instagram.href, target: '_blank' as const, variant: 'link' as const }
-          : undefined,
-      },
-    ]}
-  />
-
-  <section class="not-prose max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <h2 class="text-3xl md:text-4xl font-bold leading-tighter tracking-tighter mb-2 text-center">Stay in the loop</h2>
-    <p class="text-xl text-muted text-center mb-8">
-      Leave your email and we will send the Consultation Bloodwork Brief and occasional protocol notes.
+  <WidgetWrapper containerClass="max-w-4xl mx-auto">
+    <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">Contact</p>
+    <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
+      Get in touch
+    </h1>
+    <p class="mt-6 max-w-2xl text-lg leading-8">
+      The fastest way to work together is to <a class="underline" href={getPermalink('/book')}>book a session</a>. For
+      anything else, email or call.
     </p>
-    <LeadCapture
-      source="contact-page"
-      buttonText="Keep me posted"
-      successMessage="Done — watch your inbox for the brief."
-      collectName={true}
-    />
-  </section>
+
+    <div class="mt-10 grid gap-6 sm:grid-cols-2">
+      {
+        cards.map((c) => (
+          <a
+            href={c.href}
+            {...('external' in c ? { target: '_blank', rel: 'me noopener' } : {})}
+            class="flex items-start gap-4 rounded-2xl border border-gray-200 p-6 hover:border-primary dark:border-slate-700"
+          >
+            <Icon name={c.icon} class="h-7 w-7 flex-none text-primary" aria-hidden="true" />
+            <span>
+              <span class="block font-semibold text-heading">{c.label}</span>
+              <span class="mt-1 block break-all">{c.value}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <p class="mt-10 text-sm text-muted">
+      {CONTACT.name}, trading as {CONTACT.tradingAs}. {CONTACT.location}. Not for medical emergencies: call 999 or NHS 111.
+    </p>
+  </WidgetWrapper>
 </Layout>

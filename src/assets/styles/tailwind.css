@@ -168,3 +168,10 @@ textarea:focus-visible,
     scroll-behavior: auto;
   }
 }
+
+/* Content is always visible: no scroll-reveal that hides sections until JS runs
+   (keeps the page readable for crawlers, link previews and full-page captures). */
+[class*='intersect'] {
+  opacity: 1 !important;
+  animation: none !important;
+}

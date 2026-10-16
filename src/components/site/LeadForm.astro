@@ -54,8 +54,7 @@ const formId = `lead-${guide}`;
       <label>Leave empty <input name="company" type="text" tabindex="-1" autocomplete="off" /></label>
     </div>
     <p class="text-xs leading-5 text-muted">
-      By submitting you agree to receive this and occasional related emails from Christopher Broomhead. See the
-      <a class="underline" href={getPermalink('/privacy')}>privacy notice</a>.
+      By submitting you agree to receive this and occasional related emails from Christopher Broomhead. See the{' '}<a class="underline" href={getPermalink('/privacy')}>privacy notice</a>.
     </p>
     <button type="submit" class="btn-primary w-full">{buttonText}</button>
     <p class="text-sm text-red-600 dark:text-red-400" role="alert" data-error hidden></p>

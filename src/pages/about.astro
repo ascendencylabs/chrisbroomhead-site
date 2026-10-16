@@ -1,102 +1,63 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Content from '~/components/widgets/Content.astro';
-import Features from '~/components/widgets/Features.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Image from '~/components/common/Image.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
-import { CONTACT, SOCIALS, CALENDLY_PROFILE } from '~/data/site';
+import photo from '~/assets/images/chris-about.jpg';
+import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
-  title: 'About',
+  title: 'About Chris Broomhead',
   description:
-    'Christopher Broomhead — evidence-informed protocol design consultations. Bloodwork first, written protocols after every paid session, based in the United Kingdom.',
+    'Chris Broomhead: from personal trainer and online coach to protocol design consultations. Manchester-born, UK-based.',
 };
-
-const instagram = SOCIALS.find((s) => s.label === 'Instagram');
 ---
 
 <Layout metadata={metadata}>
-  <Content
-    tagline="About"
-    title="Evidence first. Everything documented."
-    items={[
-      {
-        title: 'The method',
-        description:
-          'Every recommendation starts from your markers — hormonal, metabolic, recovery, cognition, longevity. Bloodwork is reviewed before the call, so the session itself is spent on decisions, not data gathering.',
-      },
-      {
-        title: 'The standard',
-        description:
-          'A consultation is not finished when the call ends. Every paid session closes with a written protocol summary: what was recommended, at what architecture, in what sequence, and what to watch.',
-      },
-      {
-        title: 'The operator',
-        description: `${CONTACT.name} trades as ${CONTACT.tradingAs}, based in ${CONTACT.location}. Consultations are private, one-to-one, and booked through Calendly.`,
-      },
-    ]}
-    image={{
-      src: '~/assets/images/hero-image.png',
-      alt: 'Chris Broomhead consultation workspace',
-    }}
-  >
-    <Fragment slot="content">
-      <p class="text-xl text-muted">
-        This practice exists because most advice in this space is undocumented, untracked and unspecific. The
-        alternative is a simple discipline: review the bloodwork, design the protocol, write it down, review it again on
-        follow-up.
-      </p>
-      {
-        instagram && (
-          <p class="mt-4 text-muted">
-            Follow the research output on{' '}
-            <a href={instagram.href} target="_blank" rel="noopener" class="underline">
-              Instagram ({instagram.handle})
-            </a>
-            .
+  <WidgetWrapper containerClass="max-w-6xl mx-auto">
+    <div class="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+      <Image
+        src={photo}
+        alt="Chris Broomhead smiling, holding a phone, in a white T-shirt"
+        class="aspect-[4/5] w-full rounded-2xl object-cover object-top shadow-xl"
+        widths={[400, 640, 800]}
+        sizes="(max-width: 1023px) 90vw, 440px"
+        width={800}
+        height={1000}
+        format="webp"
+      />
+      <div>
+        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">About</p>
+        <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
+          Evidence first. Everything written down.
+        </h1>
+        <div class="mt-6 space-y-5 text-lg leading-8">
+          <p>I'm Chris Broomhead. Made in Manchester, based in the UK.</p>
+          <p>
+            I started as a personal trainer and online coach. Training plans, nutrition, accountability. Over time the
+            questions clients brought me changed. Less about sets and reps. More about bloodwork, hormones, recovery and
+            peptides.
           </p>
-        )
-      }
-    </Fragment>
-  </Content>
-
-  <Features
-    tagline="Working together"
-    title="What working with me looks like"
-    items={[
-      {
-        title: 'Private and direct',
-        description: 'Every session is one-to-one. No groups, no junior staff, no handoffs.',
-        icon: 'tabler:user',
-      },
-      {
-        title: 'Documented outcomes',
-        description: 'Written protocol summary after every paid session — 48 to 72 hours, depending on format.',
-        icon: 'tabler:file-check',
-      },
-      {
-        title: 'Follow-up discipline',
-        description: 'Protocols are reviewed against progress and new bloodwork, not left to drift.',
-        icon: 'tabler:refresh',
-      },
-    ]}
-  />
+          <p>
+            Those questions deserve more than a forum thread. They deserve a protocol built on data: your markers, your
+            history, your goal. That is what my consultations are.
+          </p>
+          <p>
+            No hype. No cookie-cutter stacks. A structured review before the call, a straight answer on it, and a written
+            summary after it.
+          </p>
+        </div>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a class="btn-primary" href={getPermalink('/book')}>Book a consultation</a>
+          <a class="btn-secondary" href={getPermalink('/work-with-me')}>See sessions and prices</a>
+        </div>
+      </div>
+    </div>
+  </WidgetWrapper>
 
   <CallToAction
-    actions={[
-      {
-        text: 'Book a free suitability call',
-        href: CALENDLY_PROFILE,
-        target: '_blank',
-        variant: 'primary',
-        icon: 'tabler:calendar-check',
-      },
-      { text: 'See consultations and prices', href: '/work-with-me' },
-    ]}
-  >
-    <Fragment slot="title">Work with Chris</Fragment>
-    <Fragment slot="subtitle">
-      The fastest route in is the free 15-minute suitability assessment — we check fit and pick the right format
-      together.
-    </Fragment>
-  </CallToAction>
+    title="Not sure where to start?"
+    subtitle="Book the free 15-minute suitability call. You will leave knowing which session fits."
+    actions={[{ variant: 'primary', text: 'Book the free call', href: getPermalink('/book#suitability') }]}
+  />
 </Layout>
