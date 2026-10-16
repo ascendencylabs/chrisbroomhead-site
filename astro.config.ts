@@ -28,7 +28,9 @@ export default defineConfig({
   output: 'static',
 
   // Inline page CSS (≈6 kB gzipped) so first paint never waits on a stylesheet request.
-  build: { inlineStylesheets: 'always' },
+  // `format: 'file'` emits about.html (not about/index.html), so GitHub Pages serves
+  // /about directly instead of 301-redirecting to /about/.
+  build: { inlineStylesheets: 'always', format: 'file' },
 
   // Prefetch links as they enter the viewport for snappier navigations
   // (works together with <ClientRouter />, which enables prefetch by default).
