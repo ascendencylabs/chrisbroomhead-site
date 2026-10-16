@@ -1,8 +1,11 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
 import LeadForm from '~/components/site/LeadForm.astro';
 import { LEAD_MAGNET } from '~/data/site';
+import { productBySlug } from '~/config/products';
+import { streamById } from '~/config/streams';
 import { getAsset, getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -10,44 +13,62 @@ const metadata = {
   description:
     'The bloodwork markers to ask for, how to prepare for the test, and what to gather before any protocol conversation. Free PDF.',
 };
+
+const brief = productBySlug('consultation-bloodwork-brief')!;
 ---
 
 <Layout metadata={metadata}>
-  <WidgetWrapper containerClass="max-w-6xl mx-auto">
-    <div class="grid items-start gap-12 lg:grid-cols-2">
+  <PageHero
+    idx="F"
+    label="Free PDF"
+    lines={['The Consultation', '<em>Bloodwork Brief.</em>']}
+    lead="A protocol written without bloodwork is a guess. This brief tells you what to ask for, how to prepare for the draw, and what to have ready before a consultation."
+  />
+
+  <section class="section !pt-6" aria-labelledby="get-brief">
+    <div class="wrap grid items-start gap-12 lg:grid-cols-[1fr_1fr] lg:gap-20">
       <div>
-        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">Free PDF</p>
-        <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
-          {LEAD_MAGNET.title}
-        </h1>
-        <p class="mt-6 text-lg leading-8">
-          A protocol written without bloodwork is a guess. This brief tells you exactly what to ask for, how to prepare for
-          the draw, and what to have ready before a consultation.
-        </p>
-        <ul class="mt-6 space-y-3 leading-7">
-          <li>— The marker panel, grouped by system, with what each one measures</li>
-          <li>— How to prepare so your results are comparable test to test</li>
-          <li>— The history checklist: protocols, doses, timelines, medications</li>
-          <li>— How to send it all before a session</li>
-        </ul>
-        <p class="mt-6 text-sm text-muted">Educational information only. Not medical advice.</p>
+        <SectionHead idx="F.1" label="Inside">
+          <span id="get-brief">{brief.pages} pages. <span class="thin">No filler.</span></span>
+        </SectionHead>
+        <ol class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            brief.contents.map((c, i) => (
+              <li
+                class="grid grid-cols-[3rem_1fr] gap-4 border-b border-[var(--cb-line)] py-6"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <span class="meta pt-1 text-[var(--cb-amber)]">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="block text-lg font-medium tracking-tight text-[var(--cb-ink)]">{c.title}</span>
+                  <span class="mt-1 block">{c.detail}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="meta mt-6">Educational information only. Not medical advice.</p>
       </div>
-      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/60 md:p-8">
-        <p class="text-xl font-bold text-heading">Send me the brief</p>
-        <p class="mt-1 mb-6 text-sm text-muted">The download opens straight after you submit.</p>
-        <LeadForm
-          guide={LEAD_MAGNET.guideId}
-          tags={['lead-magnet', 'bloodwork-brief', 'website']}
-          buttonText="Get the free brief"
-          successTitle="Done. Your brief is ready."
-          successBody="Download it below. When your bloodwork is back, book a session and send it over 48 to 72 hours before the call."
-          downloadHref={getAsset(LEAD_MAGNET.file)}
-          downloadText="Download the PDF"
-        />
-        <p class="mt-6 text-sm">
-          Already have your bloodwork? <a class="underline" href={getPermalink('/book')}>Book a consultation</a>.
+      <div class="panel spot lg:sticky lg:top-28" data-reveal>
+        <p class="eyebrow"><span class="idx">PDF</span> Send me the brief</p>
+        <p class="mt-4">The download opens straight after you submit.</p>
+        <div class="mt-8">
+          <LeadForm
+            guide={LEAD_MAGNET.guideId}
+            source={streamById('free-guides').leadSource}
+            tags={['lead-magnet', 'bloodwork-brief', 'website']}
+            buttonText="Get the free brief"
+            successTitle="Done. Your brief is ready."
+            successBody="Download it below. When your bloodwork is back, book a session and send it over 48 to 72 hours before the call."
+            downloadHref={getAsset(LEAD_MAGNET.file)}
+            downloadText="Download the PDF"
+          />
+        </div>
+        <p class="mt-8 text-sm">
+          Already have your bloodwork? <a class="link-u" href={getPermalink('/book')}>Book a consultation</a>.
         </p>
       </div>
     </div>
-  </WidgetWrapper>
+  </section>
 </Layout>

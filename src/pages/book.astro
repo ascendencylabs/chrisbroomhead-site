@@ -1,7 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Headline from '~/components/ui/Headline.astro';
+import PageHero from '~/components/site/PageHero.astro';
 import CalendlyBooking from '~/components/site/CalendlyBooking.astro';
 import { getPermalink } from '~/utils/permalinks';
 
@@ -16,16 +15,19 @@ const metadata = {
     <link rel="preconnect" href="https://assets.calendly.com" />
     <link rel="preconnect" href="https://calendly.com" />
   </Fragment>
-  <WidgetWrapper containerClass="max-w-7xl mx-auto">
-    <Headline
-      tagline="Book"
-      title="Book a consultation"
-      subtitle="Choose a session, then pick a time. The 30-minute private consultation is selected by default."
-    />
-    <CalendlyBooking />
-    <p class="mt-8 text-sm text-muted">
-      Questions before booking? <a class="underline" href={getPermalink('/contact')}>Get in touch</a>.{' '}
-      Read the{' '}<a class="underline" href={getPermalink('/terms')}>terms</a> before you pay.
-    </p>
-  </WidgetWrapper>
+  <PageHero
+    idx="B"
+    label="Book"
+    lines={['Choose a session.', '<em>Pick a time.</em>']}
+    lead="The 30-minute private consultation is selected by default. Paid sessions are paid by card at booking; the Zoom link arrives in your confirmation email."
+  />
+  <section class="section !pt-6" aria-label="Booking calendar">
+    <div class="wrap">
+      <CalendlyBooking />
+      <p class="mt-10 text-sm">
+        Questions before booking? <a class="link-u" href={getPermalink('/contact')}>Get in touch</a>. Read the{' '}
+        <a class="link-u" href={getPermalink('/terms')}>terms</a> before you pay.
+      </p>
+    </div>
+  </section>
 </Layout>

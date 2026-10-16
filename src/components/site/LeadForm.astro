@@ -3,8 +3,10 @@ import { LEADS_ENDPOINT } from '~/data/site';
 import { getPermalink } from '~/utils/permalinks';
 
 export interface Props {
-  /** Stored in leads.guide and used to pick the success message. */
+  /** Stored in leads.guide (the specific asset or list). */
   guide: string;
+  /** Stream tag from src/config/streams.ts, stored in leads.source. */
+  source: string;
   tags: string[];
   buttonText: string;
   successTitle: string;
@@ -12,9 +14,28 @@ export interface Props {
   /** Optional download revealed after a successful submit. */
   downloadHref?: string;
   downloadText?: string;
+  /** Optional extra fields. */
+  role?: { label: string; options: string[] };
+  message?: { label: string; placeholder?: string; required?: boolean };
+  phone?: boolean;
+  consent?: string;
 }
 
-const { guide, tags, buttonText, successTitle, successBody, downloadHref, downloadText } = Astro.props;
+const {
+  guide,
+  source,
+  tags,
+  buttonText,
+  successTitle,
+  successBody,
+  downloadHref,
+  downloadText,
+  role,
+  message,
+  phone = false,
+  consent = 'By submitting you agree to receive this and occasional related emails from Christopher Broomhead.',
+} = Astro.props;
+
 const formId = `lead-${guide}`;
 ---
 
@@ -22,50 +43,86 @@ const formId = `lead-${guide}`;
   data-endpoint={LEADS_ENDPOINT.url}
   data-key={LEADS_ENDPOINT.anonKey}
   data-guide={guide}
+  data-source={source}
   data-tags={JSON.stringify(tags)}
 >
-  <form id={formId} class="grid gap-4" novalidate>
-    <div>
-      <label for={`${formId}-name`} class="block text-sm font-medium">First name</label>
-      <input
-        id={`${formId}-name`}
-        name="name"
-        type="text"
-        autocomplete="given-name"
-        required
-        maxlength="80"
-        class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
-      />
+  <form id={formId} class="grid gap-7" novalidate>
+    <div class="grid gap-7 sm:grid-cols-2">
+      <div class="field">
+        <label for={`${formId}-name`}>First name</label>
+        <input id={`${formId}-name`} name="name" type="text" autocomplete="given-name" required maxlength="80" />
+      </div>
+      <div class="field">
+        <label for={`${formId}-email`}>Email</label>
+        <input id={`${formId}-email`} name="email" type="email" autocomplete="email" required maxlength="160" />
+      </div>
     </div>
-    <div>
-      <label for={`${formId}-email`} class="block text-sm font-medium">Email</label>
-      <input
-        id={`${formId}-email`}
-        name="email"
-        type="email"
-        autocomplete="email"
-        required
-        maxlength="160"
-        class="mt-1 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-base text-gray-900 dark:border-slate-600 dark:bg-slate-900 dark:text-white"
-      />
-    </div>
+    {
+      phone && (
+        <div class="field">
+          <label for={`${formId}-phone`}>Phone (optional)</label>
+          <input id={`${formId}-phone`} name="phone" type="tel" autocomplete="tel" maxlength="40" />
+        </div>
+      )
+    }
+    {
+      role && (
+        <div class="field">
+          <label for={`${formId}-role`}>{role.label}</label>
+          <select id={`${formId}-role`} name="role" required>
+            <option value="">Choose one</option>
+            {role.options.map((o) => (
+              <option value={o}>{o}</option>
+            ))}
+          </select>
+        </div>
+      )
+    }
+    {
+      message && (
+        <div class="field">
+          <label for={`${formId}-message`}>{message.label}</label>
+          <textarea
+            id={`${formId}-message`}
+            name="message"
+            maxlength="2000"
+            placeholder={message.placeholder}
+            required={message.required}
+          />
+        </div>
+      )
+    }
     <!-- Honeypot: humans never see or fill this. -->
     <div class="hidden" aria-hidden="true">
       <label>Leave empty <input name="company" type="text" tabindex="-1" autocomplete="off" /></label>
     </div>
-    <p class="text-xs leading-5 text-muted">
-      By submitting you agree to receive this and occasional related emails from Christopher Broomhead. See the{' '}<a class="underline" href={getPermalink('/privacy')}>privacy notice</a>.
+    <p class="text-[0.78rem] leading-5 text-[var(--cb-ink-3)]">
+      {consent} See the{' '}<a class="link-u !text-[var(--cb-ink-2)]" href={getPermalink('/privacy')}>privacy notice</a
+      >.
     </p>
-    <button type="submit" class="btn-primary w-full">{buttonText}</button>
-    <p class="text-sm text-red-600 dark:text-red-400" role="alert" data-error hidden></p>
+    <button type="submit" class="btn-cb btn-cb--block cursor-pointer disabled:cursor-wait disabled:opacity-70">
+      <span data-label>{buttonText}</span>
+      <span class="btn-cb__icon" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+          ><path d="M1 6H11M11 6L6.5 1.5M11 6L6.5 10.5" stroke="currentColor" stroke-width="1.5"></path></svg
+        >
+      </span>
+    </button>
+    <p class="text-sm text-[var(--cb-alert)]" role="alert" data-error hidden></p>
   </form>
-  <div data-success hidden tabindex="-1" class="rounded-xl border border-primary/40 bg-primary/5 p-6">
-    <p class="text-lg font-bold text-heading">{successTitle}</p>
-    <p class="mt-2 text-sm leading-6">{successBody}</p>
+  <div data-success hidden tabindex="-1" class="panel">
+    <p class="eyebrow"><span class="idx">✓</span> Received</p>
+    <p class="mt-4 text-2xl font-semibold tracking-tight text-[var(--cb-ink)]">{successTitle}</p>
+    <p class="mt-3 leading-7">{successBody}</p>
     {
       downloadHref && (
-        <a class="btn-primary mt-4" href={downloadHref} download>
-          {downloadText}
+        <a class="btn-cb mt-6" href={downloadHref} download>
+          <span>{downloadText}</span>
+          <span class="btn-cb__icon" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 1V11M6 11L1.5 6.5M6 11L10.5 6.5" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+          </span>
         </a>
       )
     }
@@ -87,17 +144,35 @@ const formId = `lead-${guide}`;
       e.preventDefault();
       const errorEl = this.querySelector<HTMLElement>('[data-error]')!;
       const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      const label = button.querySelector<HTMLElement>('[data-label]');
       const data = new FormData(form);
-      const name = String(data.get('name') || '').trim();
-      const email = String(data.get('email') || '')
-        .trim()
-        .toLowerCase();
+      const value = (k: string) => String(data.get(k) || '').trim();
+      const name = value('name');
+      const email = value('email').toLowerCase();
+      const role = value('role');
+      const message = value('message');
+      const phone = value('phone');
+
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      const invalid = (field: string, msg: string) => {
+        form.querySelector(`[name="${field}"]`)?.setAttribute('aria-invalid', 'true');
+        (form.querySelector(`[name="${field}"]`) as HTMLElement | null)?.focus();
+        return this.fail(errorEl, msg);
+      };
 
       if (data.get('company')) return this.done(form);
-      if (!name) return this.fail(errorEl, 'Please add your first name.');
-      if (!EMAIL.test(email)) return this.fail(errorEl, 'Please enter a valid email address.');
+      if (!name) return invalid('name', 'Please add your first name.');
+      if (!EMAIL.test(email)) return invalid('email', 'Please enter a valid email address.');
+      if (form.querySelector('[name="role"]') && !role) return invalid('role', 'Please choose one option.');
+      const msgEl = form.querySelector<HTMLTextAreaElement>('[name="message"]');
+      if (msgEl?.required && !message) return invalid('message', 'Please add a short message.');
+
+      const tags: string[] = JSON.parse(this.dataset.tags || '[]');
+      if (role) tags.push(`role:${role}`);
 
       button.disabled = true;
+      const original = label?.textContent;
+      if (label) label.textContent = 'Sending…';
       errorEl.hidden = true;
       try {
         const res = await fetch(this.dataset.endpoint!, {
@@ -111,15 +186,18 @@ const formId = `lead-${guide}`;
           body: JSON.stringify({
             name,
             email,
-            source: `chrisbroomhead-site:${location.pathname}`,
+            ...(phone ? { phone } : {}),
+            ...(message ? { message } : {}),
+            source: `chrisbroomhead-site:${this.dataset.source}`,
             guide: this.dataset.guide,
-            tags: JSON.parse(this.dataset.tags || '[]'),
+            tags,
           }),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         this.done(form);
       } catch {
         button.disabled = false;
+        if (label && original) label.textContent = original;
         this.fail(errorEl, 'That did not go through. Please try again, or email admin@chrisbroomheadcoaching.com.');
       }
     }

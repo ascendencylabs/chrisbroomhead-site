@@ -1,0 +1,106 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import { PRODUCTS, isPurchasable, type Product } from '~/config/products';
+import { getPermalink } from '~/utils/permalinks';
+
+export function getStaticPaths() {
+  // Free products live on their own pages (e.g. /free-guide); paid ones get a product page.
+  return PRODUCTS.filter((p) => !p.free).map((p) => ({ params: { slug: p.slug }, props: { product: p } }));
+}
+
+const { product } = Astro.props as { product: Product };
+const buyable = isPurchasable(product);
+
+const metadata = {
+  title: `${product.title} — guide`,
+  description: product.subtitle,
+};
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="G"
+    label={`Guide · ${product.format}`}
+    status={buyable ? undefined : 'Launching soon'}
+    lines={[product.title]}
+    lead={product.subtitle}
+  >
+    {
+      buyable ? (
+        <CtaButton href={product.paymentLink} external>{`Buy · £${product.price}`}</CtaButton>
+      ) : (
+        <CtaButton href="#join" arrow="down">
+          Join the list for launch
+        </CtaButton>
+      )
+    }
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="inside-title">
+    <div class="wrap grid items-start gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="G.2" label="Inside">
+          <span id="inside-title">What it covers.</span>
+        </SectionHead>
+        <ol class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            product.contents.map((c, i) => (
+              <li
+                class="grid grid-cols-[3rem_1fr] gap-4 border-b border-[var(--cb-line)] py-6"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <span class="meta pt-1 text-[var(--cb-amber)]">{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="block text-lg font-medium tracking-tight text-[var(--cb-ink)]">{c.title}</span>
+                  <span class="mt-1 block">{c.detail}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="mt-12 grid gap-6 sm:grid-cols-2">
+          <div class="panel">
+            <p class="eyebrow"><span class="idx">✓</span> For</p>
+            <p class="mt-4">{product.forWhom}</p>
+          </div>
+          <div class="panel">
+            <p class="eyebrow"><span class="idx">✕</span> Not for</p>
+            <p class="mt-4">{product.notFor}</p>
+          </div>
+        </div>
+        <p class="meta mt-8">Educational information only. Not medical advice.</p>
+      </div>
+      <div class="lg:sticky lg:top-28">
+        {
+          buyable ? (
+            <div class="panel">
+              <p class="ledger__price">£{product.price}</p>
+              <p class="mt-3">{product.format}. Secure checkout by Stripe. Delivered by email.</p>
+              <div class="mt-8">
+                <CtaButton href={product.paymentLink} external block>
+                  Buy now
+                </CtaButton>
+              </div>
+            </div>
+          ) : (
+            <WaitlistPanel
+              stream="shop"
+              guide={product.slug}
+              title="Join the list for launch"
+              note="One email when this guide is available, with the launch price."
+              buttonText="Tell me when it launches"
+            />
+          )
+        }
+        <p class="mt-6 text-sm">
+          <a class="link-u" href={getPermalink('/shop')}>← All guides</a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,96 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+
+const metadata = {
+  title: 'Clinics, practitioners and speaking',
+  description:
+    'Education sessions for clinics, personal trainers and practitioners, and speaking enquiries for Chris Broomhead.',
+};
+
+const formats = [
+  {
+    k: 'Team education',
+    v: 'A session for clinic or gym teams on bloodwork literacy and how protocols are reasoned through, so your team can answer client questions with evidence, not hearsay.',
+  },
+  {
+    k: 'Personal trainers and coaches',
+    v: 'For coaches whose clients are asking about bloodwork and peptides: where the evidence stands, what is out of scope for a coach, and when to refer.',
+  },
+  {
+    k: 'Speaking',
+    v: 'Talks and panels on bloodwork, protocol design and how to read evidence. In person in the UK, or online.',
+  },
+  {
+    k: 'Podcasts and interviews',
+    v: 'Long-form conversations on the same subjects. Education first, no product promotion.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="B2B"
+    label="Clinics & speaking"
+    status="Enquiries open"
+    lines={['For clinics,', 'coaches <em>and stages.</em>']}
+    lead="Education for teams who field client questions about bloodwork and protocols, and talks for audiences who want the reasoning, not the hype."
+  >
+    <CtaButton href="#enquire" arrow="down">Make an enquiry</CtaButton>
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="formats">
+    <div class="wrap grid items-start gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="B.1" label="Formats">
+          <span id="formats">Ways to <em>work together.</em></span>
+        </SectionHead>
+        <div class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            formats.map((f, i) => (
+              <div
+                class="grid gap-2 border-b border-[var(--cb-line)] py-7 sm:grid-cols-[13rem_1fr] sm:gap-8"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <p class="text-lg font-medium tracking-tight text-[var(--cb-ink)]">{f.k}</p>
+                <p>{f.v}</p>
+              </div>
+            ))
+          }
+        </div>
+        <p class="meta mt-8 max-w-xl leading-6">
+          All sessions are educational. They do not cover prescribing, and no product is promoted or sold.
+        </p>
+      </div>
+      <div class="lg:sticky lg:top-28">
+        <WaitlistPanel
+          id="enquire"
+          stream="practitioners"
+          guide="b2b-enquiry"
+          title="Make an enquiry"
+          note="Tell me who you are and what you have in mind. You will get a reply by email."
+          buttonText="Send enquiry"
+          successTitle="Enquiry received."
+          successBody="Thank you. You will get a reply by email."
+          role={{
+            label: 'I am enquiring about',
+            options: [
+              'Team education (clinic)',
+              'Team education (gym or PT)',
+              'Speaking',
+              'Podcast or interview',
+              'Something else',
+            ],
+          }}
+          message={{ label: 'Details', placeholder: 'Organisation, audience, dates, location', required: true }}
+          phone
+          consent="By submitting you agree to be contacted about your enquiry."
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

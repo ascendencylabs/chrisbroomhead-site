@@ -1,0 +1,102 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+
+const metadata = {
+  title: 'Peptide Fundamentals — the programme',
+  description:
+    'A structured, education-only programme on peptides, bloodwork and protocol design, built from Chris Broomhead’s guides. Join the waitlist.',
+};
+
+// Curriculum drawn from the Consultation Bloodwork Brief and the Peptide Primer
+// (education sections only: no compounds, doses, suppliers or injection technique).
+const modules = [
+  {
+    t: 'Foundations',
+    v: 'What peptides are. Receptor binding and the lock-and-key model. Signalling cascades, and why precision matters. Why the route of administration changes the outcome.',
+  },
+  {
+    t: 'The information problem',
+    v: 'Why forum threads, influencer videos and weekend-certified coaches disagree. How to tell a mechanism from a marketing claim.',
+  },
+  {
+    t: 'Bloodwork first',
+    v: 'The marker panel by system: metabolic, cardiovascular, hormones, thyroid, liver and kidney, blood and nutrients. What each marker measures.',
+  },
+  {
+    t: 'Getting reliable results',
+    v: 'Preparing for the draw: timing, fasting, training, hydration and the biotin rule. Retesting under the same conditions so two results can be compared.',
+  },
+  {
+    t: 'The protocol design framework',
+    v: 'One primary objective. Mechanism-led reasoning. Sequencing, review points and knowing when to stop. Why combining things is done with restraint.',
+  },
+  {
+    t: 'Keeping a record',
+    v: 'The history checklist: what you run, when you started, what happened, side effects and when they began. Why a record beats memory.',
+  },
+  {
+    t: 'Five expensive mistakes',
+    v: 'The patterns that waste money and muddy the data, and how to avoid each one.',
+  },
+  {
+    t: 'Using expert help well',
+    v: 'How to prepare for a consultation or a conversation with your doctor so the time is spent on decisions, not on gathering facts.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="P"
+    label="Programme"
+    status="Waitlist open"
+    lines={['Peptide', '<em>Fundamentals.</em>']}
+    lead="A structured programme for people who want to understand the subject properly before they make any decision. Education only: no doses, no products, no suppliers."
+  >
+    <CtaButton href="#join" arrow="down">Join the waitlist</CtaButton>
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="curriculum">
+    <div class="wrap grid items-start gap-14 lg:grid-cols-[1.35fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="P.1" label="Curriculum">
+          <span id="curriculum">Eight modules. <span class="thin">One way of thinking.</span></span>
+        </SectionHead>
+        <ol class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            modules.map((m, i) => (
+              <li
+                class="grid gap-2 border-b border-[var(--cb-line)] py-7 sm:grid-cols-[4.5rem_1fr] sm:gap-6"
+                data-reveal
+                style={`--d:${i % 4}`}
+              >
+                <span class="meta pt-1 text-[var(--cb-amber)]">M{String(i + 1).padStart(2, '0')}</span>
+                <span>
+                  <span class="h3 block">{m.t}</span>
+                  <span class="mt-2 block">{m.v}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="meta mt-8 max-w-xl leading-6">
+          Educational content only. Not medical advice. The programme does not recommend, supply or sell any product or
+          medicine.
+        </p>
+      </div>
+      <div class="lg:sticky lg:top-28">
+        <WaitlistPanel
+          stream="programme"
+          guide="peptide-fundamentals-programme"
+          title="Join the waitlist"
+          note="Format, dates and price are announced to the waitlist first."
+          buttonText="Join the waitlist"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

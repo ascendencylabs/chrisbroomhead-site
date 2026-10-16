@@ -1,0 +1,79 @@
+---
+import { Icon } from 'astro-icon/components';
+import { footerColumns, legalLinks, socialLinks } from '~/navigation';
+import { CONTACT } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative mt-auto overflow-clip border-t border-[var(--cb-line)] pt-20">
+  <div class="wrap">
+    <div class="grid gap-14 lg:grid-cols-[1.3fr_2fr]">
+      <div>
+        <p class="eyebrow"><span class="idx">§ END</span> Next step</p>
+        <p class="display display-m mt-6 max-w-md">Get the protocol <em>written down.</em></p>
+        <a href={getPermalink('/book')} class="btn-cb mt-8" data-magnetic>
+          Book a consultation
+          <span class="btn-cb__icon" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+              ><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5"></path></svg
+            >
+          </span>
+        </a>
+      </div>
+      <div class="grid gap-10 sm:grid-cols-[1fr_0.8fr_1.25fr]">
+        {
+          footerColumns.map((col) => (
+            <div>
+              <p class="meta uppercase tracking-[0.14em]">{col.title}</p>
+              <ul class="mt-5 space-y-3">
+                {col.links.map((l) => (
+                  <li>
+                    <a
+                      class="[overflow-wrap:anywhere] text-[0.95rem] text-[var(--cb-ink-2)] no-underline transition hover:text-[var(--cb-ink)]"
+                      href={l.href}
+                    >
+                      {l.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-20 grid gap-6 border-t border-[var(--cb-line)] py-8 text-sm md:grid-cols-[1fr_auto] md:items-center">
+      <p class="max-w-3xl text-[0.82rem] leading-6 text-[var(--cb-ink-3)]">
+        Educational and evidence-informed. Not medical advice. Consultations do not diagnose, treat or prevent any
+        condition, and no prescription-only medicine is supplied or recommended through this site.
+        {`© ${year} ${CONTACT.name}, trading as ${CONTACT.tradingAs}, ${CONTACT.location}.`}
+      </p>
+      <div class="flex items-center gap-6">
+        {
+          legalLinks.map((l) => (
+            <a class="meta no-underline hover:text-[var(--cb-ink)]" href={l.href}>
+              {l.text}
+            </a>
+          ))
+        }
+        {
+          socialLinks.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="me noopener"
+              aria-label={`${s.label} ${s.handle}`}
+              class="text-[var(--cb-ink-3)] transition hover:text-[var(--cb-ink)]"
+            >
+              <Icon name={s.icon} class="h-5 w-5" aria-hidden="true" />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+  <p class="wordmark -mb-[0.12em] pl-[var(--cb-gutter)]" aria-hidden="true">Broomhead</p>
+</footer>

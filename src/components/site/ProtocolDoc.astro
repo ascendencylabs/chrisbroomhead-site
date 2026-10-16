@@ -1,0 +1,46 @@
+---
+// "What you get": the structure of the written protocol, shown as a document.
+// Illustrative structure only — the bars stand in for client-specific content.
+const sections = [
+  { n: '1', title: 'Objective', note: 'One primary goal, with a timeframe.', bars: [0.92, 0.6] },
+  { n: '2', title: 'Baseline', note: 'The markers reviewed, and what stands out.', bars: [0.85, 0.74, 0.4] },
+  {
+    n: '3',
+    title: 'Protocol architecture',
+    note: 'What changes, why, and in what order.',
+    bars: [0.95, 0.88, 0.7, 0.52],
+  },
+  { n: '4', title: 'Sequencing and timeline', note: 'Phases, review points, and when to stop.', bars: [0.8, 0.66] },
+  { n: '5', title: 'Side-effect review', note: 'What to watch for as you go.', bars: [0.7, 0.5] },
+  { n: '6', title: 'Monitoring', note: 'What to retest, and when.', bars: [0.64] },
+];
+---
+
+<div class="doc" data-reveal>
+  <div class="flex items-start justify-between gap-6">
+    <div>
+      <p class="meta uppercase tracking-[0.14em]">Written protocol · illustrative</p>
+      <h3 class="mt-2 text-2xl font-semibold tracking-tight">Protocol summary</h3>
+    </div>
+    <p class="meta text-right">Ref. CB-0000<br />Prepared after consultation</p>
+  </div>
+  <div class="mt-6">
+    {
+      sections.map((s) => (
+        <div class="doc__row">
+          <p class="meta pt-0.5">{s.n.padStart(2, '0')}</p>
+          <div>
+            <h4 class="font-semibold tracking-tight">{s.title}</h4>
+            <p class="meta mt-0.5">{s.note}</p>
+            {s.bars.map((w, i) => (
+              <span class:list={['redact', i > 0 && 'redact--soft']} style={`width:${w * 100}%`} aria-hidden="true" />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <p class="meta mt-4 border-t border-[rgb(27_28_26/0.14)] pt-4">
+    Educational and evidence-informed. Not medical advice. Discuss any change with your healthcare provider.
+  </p>
+</div>

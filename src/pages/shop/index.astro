@@ -1,0 +1,86 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import { PRODUCTS, isPurchasable } from '~/config/products';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Guides',
+  description:
+    'Education-only digital guides from Chris Broomhead: bloodwork, peptide fundamentals and protocol design.',
+};
+
+const priceLabel = (p: (typeof PRODUCTS)[number]) =>
+  p.free ? 'Free' : isPurchasable(p) && p.price !== null ? `£${p.price}` : 'At launch';
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="G"
+    label="Guides"
+    status="Shop opening soon"
+    lines={['Guides that teach', 'the <em>reasoning.</em>']}
+    lead="Education-only guides. They explain how to think about bloodwork, evidence and protocol design. They do not tell you what to take, how much, or where to buy it."
+  />
+
+  <section class="section !pt-6" aria-labelledby="shop-list">
+    <div class="wrap">
+      <SectionHead idx="G.1" label="Catalogue">
+        <span id="shop-list">The library.</span>
+      </SectionHead>
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        {
+          PRODUCTS.map((p, i) => (
+            <a
+              href={p.free && p.href ? getPermalink(p.href) : getPermalink(`/shop/${p.slug}`)}
+              class="panel spot group flex flex-col no-underline"
+              data-reveal
+              style={`--d:${i}`}
+            >
+              <div class="relative mb-8 aspect-[16/10] overflow-hidden rounded-xl bg-[var(--cb-ground-2)] shadow-[inset_0_0_0_1px_var(--cb-line)]">
+                <div class="absolute inset-y-5 left-1/2 w-[46%] -translate-x-1/2 rotate-[-4deg] rounded-md bg-[#ebe6dc] p-4 shadow-[0_30px_60px_-20px_rgb(0_0_0/0.8)] transition duration-700 group-hover:rotate-0 group-hover:scale-[1.03]">
+                  <p class="font-mono text-[0.55rem] uppercase tracking-[0.14em] text-[#5c5a54]">
+                    {p.free ? 'Free guide' : 'Guide'}
+                  </p>
+                  <p class="mt-2 text-[0.95rem] font-semibold leading-tight tracking-tight text-[#121311]">{p.title}</p>
+                  <span class="redact mt-4 !h-1.5" style="width:90%" />
+                  <span class="redact redact--soft !h-1.5" style="width:70%" />
+                  <span class="redact redact--soft !h-1.5" style="width:80%" />
+                </div>
+              </div>
+              <div class="flex items-start justify-between gap-6">
+                <h2 class="h3">{p.title}</h2>
+                <span class="ledger__price !text-2xl whitespace-nowrap">{priceLabel(p)}</span>
+              </div>
+              <p class="mt-3">{p.subtitle}</p>
+              <p class="meta mt-6">
+                {p.format}
+                {p.pages ? ` · ${p.pages} pages` : ''} ·{' '}
+                {p.free ? 'Download now' : isPurchasable(p) ? 'Buy now' : 'Join the list for launch'} →
+              </p>
+            </a>
+          ))
+        }
+      </div>
+      <div class="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-20">
+        <div class="prose-cb" data-reveal>
+          <h2 class="h3">What these guides are not</h2>
+          <ul class="ticks mt-6">
+            <li>Not medical advice, and not a substitute for a clinician.</li>
+            <li>No doses, no product recommendations, no suppliers.</li>
+            <li>No promises of outcomes.</li>
+          </ul>
+        </div>
+        <WaitlistPanel
+          stream="shop"
+          guide="guides-launch"
+          title="Tell me when the guides launch"
+          note="One email when the shop opens, with a launch price for the list."
+          buttonText="Join the launch list"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

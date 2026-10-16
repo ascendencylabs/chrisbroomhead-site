@@ -1,0 +1,32 @@
+---
+// Numbered section heading in the lab-report style: § index, label, display title.
+export interface Props {
+  idx: string;
+  label: string;
+  title?: string;
+  lead?: string;
+  size?: 'l' | 'm';
+  class?: string;
+  as?: 'h1' | 'h2';
+}
+
+const { idx, label, title, lead, size = 'm', class: className = '', as: Tag = 'h2' } = Astro.props;
+---
+
+<div class:list={['max-w-4xl', className]}>
+  <p class="eyebrow"><span class="idx">§ {idx}</span> {label}</p>
+  {
+    (title || Astro.slots.has('default')) && (
+      <Tag class:list={['display mt-6', size === 'l' ? 'display-l' : 'display-m']} data-split>
+        {title ? <Fragment set:html={title} /> : <slot />}
+      </Tag>
+    )
+  }
+  {
+    lead && (
+      <p class="lead mt-6" data-reveal>
+        {lead}
+      </p>
+    )
+  }
+</div>

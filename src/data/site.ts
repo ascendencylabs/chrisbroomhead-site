@@ -49,7 +49,7 @@ export const OFFERS: Offer[] = [
     summary: 'One precise question, answered properly. A structured session on a single protocol element.',
     includes: [
       'Targeted guidance on one protocol element',
-      'Selection, dosing architecture, sequencing or ancillary support',
+      'One element: selection, sequencing or supporting measures',
       'Written summary of recommendations after the call',
     ],
     prep: 'Send relevant bloodwork, current protocols or history to the email in your confirmation.',
@@ -66,7 +66,7 @@ export const OFFERS: Offer[] = [
     summary: 'A full review of your current approach, with a written protocol summary within 48 hours.',
     includes: [
       'Pre-call review of your bloodwork and protocol history',
-      'Compound selection, dosing architecture, sequencing and refinement',
+      'Review of what you are running, sequencing and refinement',
       'Detailed written protocol summary within 48 hours',
     ],
     prep: 'Submit bloodwork, current protocols and usage history at least 48 hours before the call.',
@@ -144,4 +144,16 @@ export const LEAD_MAGNET = {
   title: 'The Consultation Bloodwork Brief',
   file: '/downloads/consultation-bloodwork-brief.pdf',
   guideId: 'consultation-bloodwork-brief',
+};
+
+// Verified figures only. Source: Calendly booking record (API export cached by the
+// CRM sync, ~/.cb-system/private/crm_sources_cache.json), checked 16 Oct 2026.
+// 478 bookings on record, 53 cancelled → 425 sessions; 248 distinct people;
+// first booked session 14 July 2020. Re-check before changing any number.
+export const STATS = {
+  sessions: 425,
+  people: 248,
+  firstYear: 2020,
+  checked: '16 Oct 2026',
+  source: 'Calendly booking record',
 };

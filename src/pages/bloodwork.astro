@@ -1,0 +1,152 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import { BLOODWORK_PROVIDERS } from '~/config/partners';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Bloodwork before a consultation',
+  description:
+    'Why bloodwork comes before any protocol conversation, what to ask for, how to prepare, and where to get tested in the UK.',
+};
+
+const anyAffiliate = BLOODWORK_PROVIDERS.some((p) => p.affiliateUrl);
+
+const why = [
+  {
+    k: 'It shows where you are',
+    v: 'Your markers are the starting point. Without them, every recommendation is a guess.',
+  },
+  { k: 'It sets the order', v: 'What needs attention first is decided by your data, not by what is popular.' },
+  { k: 'It measures change', v: 'A baseline is the only way to know whether anything you change is working.' },
+];
+
+const steps = [
+  { n: '01', t: 'Ask your GP first', v: 'Some markers are routinely available on the NHS when clinically indicated.' },
+  {
+    n: '02',
+    t: 'Fill the gaps privately',
+    v: 'Anything not covered can be ordered through a private UK blood testing service, as a finger-prick kit or a venous draw at a clinic. Venous draws are more reliable for hormones and lipids.',
+  },
+  {
+    n: '03',
+    t: 'Prepare properly',
+    v: 'Morning, fasted, no hard training for 48 hours, normal hydration, and tell the lab about biotin.',
+  },
+  {
+    n: '04',
+    t: 'Retest the same way',
+    v: 'Same lab, same time of day, same preparation. Otherwise you are comparing two different measurements.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="BW"
+    label="Bloodwork"
+    lines={['Data before', '<em>decisions.</em>']}
+    lead="A protocol written without bloodwork is a guess. Here is why it comes first, how to get it done in the UK, and how to prepare so the result means something."
+  >
+    <div class="flex flex-col gap-4 sm:flex-row">
+      <CtaButton href={getPermalink('/free-guide')} arrow="down">Free Bloodwork Brief</CtaButton>
+      <CtaButton href={getPermalink('/book')} variant="ghost">Book a consultation</CtaButton>
+    </div>
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="bw-why">
+    <div class="wrap">
+      <SectionHead idx="BW.1" label="Why">
+        <span id="bw-why">Three reasons it <em>comes first.</em></span>
+      </SectionHead>
+      <div class="mt-12 grid gap-px overflow-hidden rounded-[1.5rem] bg-[var(--cb-line)] md:grid-cols-3">
+        {
+          why.map((w, i) => (
+            <div class="bg-[var(--cb-ground)] p-8 md:p-10" data-reveal style={`--d:${i}`}>
+              <span class="meta text-[var(--cb-amber)]">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="h3 mt-4">{w.k}</h3>
+              <p class="mt-3">{w.v}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section relative" aria-labelledby="bw-how">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="wrap relative grid gap-14 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+      <SectionHead idx="BW.2" label="How">
+        <span id="bw-how">Getting tested <span class="thin">in the UK.</span></span>
+      </SectionHead>
+      <ol class="border-t border-[var(--cb-line-strong)]">
+        {
+          steps.map((s, i) => (
+            <li
+              class="grid grid-cols-[3rem_1fr] gap-4 border-b border-[var(--cb-line)] py-7"
+              data-reveal
+              style={`--d:${i}`}
+            >
+              <span class="meta pt-1 text-[var(--cb-amber)]">{s.n}</span>
+              <span>
+                <span class="h3 block">{s.t}</span>
+                <span class="mt-2 block">{s.v}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="bw-providers">
+    <div class="wrap">
+      <SectionHead idx="BW.3" label="Providers">
+        <span id="bw-providers">UK private testing.</span>
+      </SectionHead>
+      <ul class="mt-12 border-t border-[var(--cb-line-strong)]">
+        {
+          BLOODWORK_PROVIDERS.map((p) => (
+            <li>
+              <a
+                href={p.affiliateUrl || p.url}
+                target="_blank"
+                rel={p.affiliateUrl ? 'sponsored noopener' : 'noopener'}
+                class="spot relative flex items-center justify-between gap-6 border-b border-[var(--cb-line)] px-2 py-6 no-underline transition hover:bg-[rgb(236_232_225/0.025)]"
+              >
+                <span class="text-xl font-medium tracking-tight text-[var(--cb-ink)]">{p.name}</span>
+                <span class="meta">
+                  {p.affiliateUrl ? 'Affiliate link ↗' : new URL(p.url).hostname.replace('www.', '') + ' ↗'}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="meta mt-6 max-w-2xl leading-6">
+        Listed for convenience; check each provider’s panels and prices yourself.
+        {anyAffiliate && ' Links marked "affiliate link" may earn a commission at no extra cost to you.'}
+      </p>
+      <div class="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-20">
+        <div class="prose-cb" data-reveal>
+          <h2 class="h3">Got your results?</h2>
+          <p class="mt-4">
+            Send them before a consultation: 48 hours ahead for a 30-minute session, 72 hours ahead for 60 minutes. The
+            review happens before the call, so the call is spent on decisions.
+          </p>
+          <div class="mt-8"><CtaButton href={getPermalink('/book')}>Book a consultation</CtaButton></div>
+        </div>
+        <WaitlistPanel
+          stream="bloodwork"
+          guide="bloodwork-updates"
+          title="Bloodwork updates"
+          note="Occasional emails on what to test, how to prepare, and new guides."
+          buttonText="Keep me posted"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

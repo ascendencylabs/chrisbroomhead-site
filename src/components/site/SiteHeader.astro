@@ -1,0 +1,93 @@
+---
+import { headerLinks, menuLinks } from '~/navigation';
+import { getHomePermalink, getPermalink } from '~/utils/permalinks';
+import { CONTACT } from '~/data/site';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => {
+  const h = href.replace(/\/+$/, '') || '/';
+  return h === path ? 'page' : undefined;
+};
+---
+
+<header class="cb-header" data-header data-scrolled="false">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-6">
+    <a
+      href={getHomePermalink()}
+      class="group flex items-center gap-3 text-[var(--cb-ink)] no-underline"
+      aria-label="Chris Broomhead, home"
+    >
+      <span
+        class="grid h-9 w-9 place-items-center rounded-full font-semibold tracking-tight shadow-[inset_0_0_0_1px_var(--cb-line-strong)] transition group-hover:shadow-[inset_0_0_0_1px_var(--cb-amber)]"
+        aria-hidden="true">CB</span
+      >
+      <span class="hidden leading-none sm:block">
+        <span class="block text-[0.95rem] font-semibold tracking-tight">Chris Broomhead</span>
+        <span class="meta mt-1 flex items-center gap-2 text-[0.66rem] uppercase tracking-[0.14em]">
+          <span class="pip" aria-hidden="true"></span> Booking open · Zoom
+        </span>
+      </span>
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-8">
+        {
+          headerLinks.map((l) => (
+            <li>
+              <a class="nav-link" href={l.href} aria-current={isCurrent(l.href)}>
+                {l.text}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={getPermalink('/book')}
+        class="btn-cb hidden !min-h-[2.75rem] !py-1 !pl-5 text-[0.92rem] sm:inline-flex"
+        data-magnetic
+      >
+        Book a consultation
+        <span class="btn-cb__icon !h-8 !w-8" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+            ><path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5"></path></svg
+          >
+        </span>
+      </a>
+      <button
+        class="burger lg:hidden"
+        type="button"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="cb-menu"
+        aria-label="Open menu"
+      >
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <span class="cb-progress" data-progress aria-hidden="true"></span>
+</header>
+
+<div id="cb-menu" class="cb-menu lg:hidden" data-menu data-open="false" aria-label="Site menu">
+  <nav aria-label="Mobile">
+    <ul>
+      {
+        menuLinks.map((l, i) => (
+          <li>
+            <a class="cb-menu__link" href={l.href} style={`--i:${i}`} aria-current={isCurrent(l.href)}>
+              <span class="mono">{String(i).padStart(2, '0')}</span>
+              {l.text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <div class="mt-auto pt-10">
+    <p class="meta">{CONTACT.email}</p>
+    <p class="meta mt-1">{CONTACT.phoneDisplay} · {CONTACT.location}</p>
+  </div>
+</div>

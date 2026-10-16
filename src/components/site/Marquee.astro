@@ -1,0 +1,17 @@
+---
+// Kinetic marquee: CSS loop, sped up by scroll velocity in motion.ts.
+export interface Props {
+  items: string[];
+  label: string;
+}
+const { items, label } = Astro.props;
+---
+
+<section class="marquee" aria-label={label}>
+  <ul class="marquee__track">
+    {items.map((t) => <li class="marquee__item">{t}</li>)}
+  </ul>
+  <ul class="marquee__track" aria-hidden="true">
+    {items.map((t) => <li class="marquee__item">{t}</li>)}
+  </ul>
+</section>

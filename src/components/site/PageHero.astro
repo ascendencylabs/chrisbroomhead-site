@@ -1,0 +1,99 @@
+---
+// Inner-page hero: § index, display title with masked line reveal, lead,
+// optional actions (default slot) and an optional specimen-plate photo.
+import Image from '~/components/common/Image.astro';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  idx: string;
+  label: string;
+  /** Lines of the title; may contain <em>…</em> for the accent colour. */
+  lines: string[];
+  lead?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  imagePosition?: string;
+  caption?: [string, string];
+  status?: string;
+}
+
+const { idx, label, lines, lead, image, imageAlt = '', imagePosition = '50% 25%', caption, status } = Astro.props;
+---
+
+<section class="hero !min-h-0 !justify-start pt-36 lg:pt-44" aria-labelledby="page-title">
+  <div
+    class="absolute inset-0 bg-[radial-gradient(50%_60%_at_80%_10%,rgb(214_165_78/0.09),transparent_70%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class:list={[
+      'wrap relative grid items-end gap-12',
+      image && 'lg:grid-cols-[minmax(0,1fr)_minmax(16rem,24rem)] lg:gap-16',
+    ]}
+  >
+    <div>
+      <p class="eyebrow" data-fade style="--i:0">
+        <span class="idx">§ {idx}</span>
+        {label}
+      </p>
+      {
+        status && (
+          <p class="mt-5" data-fade style="--i:0">
+            <span class="tag tag--assay">
+              <span class="pip" aria-hidden="true" /> {status}
+            </span>
+          </p>
+        )
+      }
+      <h1 id="page-title" class="display display-l mt-7">
+        {
+          lines.map((l, i) => (
+            <span class="line-mask">
+              <span style={`--i:${i}`} set:html={l} />
+            </span>
+          ))
+        }
+      </h1>
+      {
+        lead && (
+          <p class="lead mt-8" data-fade style="--i:1">
+            {lead}
+          </p>
+        )
+      }
+      {
+        Astro.slots.has('default') && (
+          <div class="mt-10" data-fade style="--i:2">
+            <slot />
+          </div>
+        )
+      }
+    </div>
+    {
+      image && (
+        <figure class="plate mx-auto w-full max-w-[24rem] lg:mx-0" data-fade style="--i:3">
+          <div class="plate__img aspect-[4/5]">
+            <Image
+              src={image}
+              alt={imageAlt}
+              widths={[360, 540, 720, 1080]}
+              sizes="(max-width: 1023px) 88vw, 384px"
+              layout="none"
+              loading="eager"
+              fetchpriority="high"
+              format="webp"
+              style={`object-position:${imagePosition}`}
+            />
+          </div>
+          {caption && (
+            <figcaption class="plate__cap">
+              <span class="meta">{caption[0]}</span>
+              <span class="meta">{caption[1]}</span>
+            </figcaption>
+          )}
+        </figure>
+      )
+    }
+  </div>
+</section>

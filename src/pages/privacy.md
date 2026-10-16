@@ -9,13 +9,14 @@ This notice explains how Christopher Broomhead, trading as Chris Broomhead Coach
 
 ## What I collect and why
 
-| Data                                             | When                                   | Purpose                                                   | Lawful basis (UK GDPR)                   |
-| ------------------------------------------------ | -------------------------------------- | --------------------------------------------------------- | ---------------------------------------- |
-| First name, email address, page you signed up on | Free guide or community waitlist form  | Send what you asked for, and occasional related emails    | Consent                                  |
-| Name, email, phone, answers to booking questions | Booking a consultation (via Calendly)  | Arrange and deliver the consultation                      | Contract                                 |
-| Payment details                                  | Paying for a consultation (via Stripe) | Take payment. I never see your full card number.          | Contract                                 |
-| Bloodwork, health history, current protocols     | You send them before a consultation    | Prepare and deliver your consultation and written summary | Explicit consent (special category data) |
-| Basic technical data (IP address, browser)       | Visiting the site                      | Security and delivery of the site by the hosting provider | Legitimate interests                     |
+| Data                                                                       | When                                             | Purpose                                                                                                  | Lawful basis (UK GDPR)                   |
+| -------------------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| First name, email address, the page and form you used                      | Free guide, newsletter and waitlist forms        | Send what you asked for, tell you when something you registered for opens, and occasional related emails | Consent                                  |
+| Phone number, your message and the option you chose (only if you add them) | Enquiry forms (for example clinics and speaking) | Reply to your enquiry                                                                                    | Consent                                  |
+| Name, email, phone, answers to booking questions                           | Booking a consultation (via Calendly)            | Arrange and deliver the consultation                                                                     | Contract                                 |
+| Payment details                                                            | Paying for a consultation (via Stripe)           | Take payment. I never see your full card number.                                                         | Contract                                 |
+| Bloodwork, health history, current protocols                               | You send them before a consultation              | Prepare and deliver your consultation and written summary                                                | Explicit consent (special category data) |
+| Basic technical data (IP address, browser)                                 | Visiting the site                                | Security and delivery of the site by the hosting provider                                                | Legitimate interests                     |
 
 This site does not use advertising or analytics cookies. The booking calendar is provided by Calendly, which sets its own cookies when it loads. See Calendly's privacy notice.
 

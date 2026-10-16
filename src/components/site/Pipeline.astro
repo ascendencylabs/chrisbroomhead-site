@@ -1,0 +1,115 @@
+---
+// "From booking to written protocol". On large screens with motion, the stage
+// pins and steps through the four stages as you scroll (motion.ts). Otherwise
+// the four stages render as a plain vertical sequence.
+import SectionHead from './SectionHead.astro';
+
+const steps = [
+  {
+    n: '01',
+    title: 'Book and pay online',
+    body: 'Choose a session and a time. Payment is taken by card at booking, through Stripe inside Calendly. The Zoom link arrives by email.',
+    detail: ['2 minutes', 'Card at booking', 'GBP'],
+  },
+  {
+    n: '02',
+    title: 'Send your data',
+    body: 'Bloodwork, what you are running now, and your history. 48 hours ahead for a 30-minute session, 72 hours for 60 minutes.',
+    detail: ['Bloodwork PDF', 'Current protocol', 'History checklist'],
+  },
+  {
+    n: '03',
+    title: 'The consultation',
+    body: 'Your data is reviewed before the call, so the call is spent on decisions: what to change, in what order, and what to measure.',
+    detail: ['Zoom', 'Pre-call review', 'Straight answers'],
+  },
+  {
+    n: '04',
+    title: 'The written protocol',
+    body: 'Every paid session ends in writing. After the call for 15 minutes, within 48 hours for 30 minutes, within 72 hours for 60 minutes.',
+    detail: ['Written summary', '48h / 72h', 'Yours to keep'],
+  },
+];
+---
+
+<section class="pipeline relative" data-pipeline data-staged="false" aria-labelledby="pipeline-title">
+  <div class="pipeline__pin" data-pin>
+    <div class="wrap section">
+      <div class="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-24">
+        <div class="pipeline__aside">
+          <SectionHead idx="03" label="How it works">
+            <span id="pipeline-title">From booking to <em>written protocol.</em></span>
+          </SectionHead>
+          <p class="lead mt-6" data-reveal>
+            The work starts before the call. That is why the call is worth paying for.
+          </p>
+          <div class="pipeline__counter mt-12 hidden items-end gap-4 lg:flex" aria-hidden="true">
+            <span class="stat__num !text-[clamp(5rem,10vw,9rem)]" data-step-counter>01</span>
+            <span class="meta mb-4">/ 04</span>
+          </div>
+        </div>
+
+        <ol class="pipeline__steps relative">
+          <span class="pipe-rail" data-rail aria-hidden="true"><span></span></span>
+          {
+            steps.map((s) => (
+              <li class="pipe-step pipeline__step" data-step data-n={s.n}>
+                <h3 class="h3">{s.title}</h3>
+                <p class="mt-3 max-w-xl">{s.body}</p>
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {s.detail.map((d) => (
+                    <li class="tag tag--muted">{d}</li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pipeline:not([data-staged='true']) .pipe-rail span {
+    transform: none;
+    opacity: 0.35;
+  }
+  /* Staged (pinned) mode: steps stack in one place, the active one is shown. */
+  @media (min-width: 64rem) {
+    .pipeline[data-staged='true'] .pipeline__pin {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+    }
+    .pipeline[data-staged='true'] .pipeline__steps {
+      display: grid;
+      min-height: 22rem;
+      align-content: center;
+    }
+    .pipeline[data-staged='true'] .pipeline__step {
+      grid-area: 1 / 1;
+      opacity: 0;
+      transform: translateY(2rem);
+      filter: blur(6px);
+      transition:
+        opacity 0.7s var(--cb-ease-out),
+        transform 0.7s var(--cb-ease-out),
+        filter 0.7s var(--cb-ease-out);
+      pointer-events: none;
+    }
+    .pipeline[data-staged='true'] .pipeline__step[data-active='true'] {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      pointer-events: auto;
+    }
+    .pipeline[data-staged='true'] .pipeline__step .h3 {
+      font-size: clamp(2rem, 3.4vw, 3.25rem);
+      letter-spacing: -0.035em;
+    }
+    .pipeline[data-staged='true'] .pipeline__step p {
+      font-size: 1.2rem;
+    }
+  }
+</style>

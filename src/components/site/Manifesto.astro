@@ -1,0 +1,37 @@
+---
+// Full-bleed cinematic portrait with a statement that lights up word by word.
+import Image from '~/components/common/Image.astro';
+import type { ImageMetadata } from 'astro';
+
+export interface Props {
+  image: ImageMetadata;
+  alt: string;
+  /** Words wrapped in *asterisks* render in the accent colour. */
+  text: string;
+  attribution?: string;
+}
+
+const { image, alt, text, attribution } = Astro.props;
+const words = text.split(/\s+/).map((w) => ({ accent: w.startsWith('*'), word: w.replace(/\*/g, '') }));
+---
+
+<section class="manifesto" aria-label="Approach">
+  <div class="manifesto__img" data-parallax="6">
+    <Image src={image} alt={alt} widths={[640, 1024, 1600, 2400]} sizes="100vw" layout="none" format="webp" />
+  </div>
+  <div class="manifesto__veil" aria-hidden="true"></div>
+  <div class="wrap relative">
+    <blockquote class="lit max-w-[52rem]">
+      <p class="display display-m !leading-[1.04]">
+        {
+          words.map((w) => (
+            <>
+              <span class:list={['lit-word', w.accent && 'accent-word']}>{w.word}</span>{' '}
+            </>
+          ))
+        }
+      </p>
+      {attribution && <footer class="meta mt-8 uppercase tracking-[0.14em]">— {attribution}</footer>}
+    </blockquote>
+  </div>
+</section>

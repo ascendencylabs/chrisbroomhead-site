@@ -1,0 +1,93 @@
+---
+// The session register: every bookable session as one ledger row.
+// Prices and links come from OFFERS in src/data/site.ts (checked against Calendly).
+import { OFFERS, type Offer } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+export interface Props {
+  includeExistingClients?: boolean;
+  detailed?: boolean;
+}
+
+const { includeExistingClients = true, detailed = false } = Astro.props;
+const offers: Offer[] = OFFERS.filter((o) => includeExistingClients || !o.existingClientsOnly);
+
+const written: Record<string, string> = {
+  'initial-consultation-suitability-assessment': 'Recommendation on the call',
+  'plan-design': 'Written summary after the call',
+  'consultation-30mins': 'Written protocol summary within 48h',
+  '60mincoachingcall': 'Structured written protocol within 72h',
+  'follow-up-review': 'Updated recommendations',
+};
+---
+
+<div class="ledger" role="list" aria-label="Sessions and prices">
+  <div
+    class="meta hidden px-4 pb-4 pt-5 uppercase tracking-[0.14em] lg:grid lg:grid-cols-[5rem_minmax(0,1.6fr)_7rem_minmax(0,2fr)_9rem_12rem] lg:gap-8"
+    aria-hidden="true"
+  >
+    <span>Code</span><span>Session</span><span>Length</span><span>Includes</span><span>Price</span><span></span>
+  </div>
+  {
+    offers.map((o, i) => (
+      <article
+        role="listitem"
+        id={o.slug}
+        class="ledger__row spot"
+        data-highlight={o.highlight ? 'true' : undefined}
+        data-reveal
+        style={`--d:${i}`}
+      >
+        <p class="meta pt-1">S-{String(i).padStart(2, '0')}</p>
+        <div>
+          <h3 class="h3">{o.shortName.replace(/ · \d+ min$/, '')}</h3>
+          <div class="mt-3 flex flex-wrap gap-2">
+            {o.highlight && <span class="tag">Most booked</span>}
+            {o.price === 0 && <span class="tag tag--assay">Free</span>}
+            {o.existingClientsOnly && <span class="tag tag--muted">Existing clients</span>}
+          </div>
+          <p class="mt-3 max-w-md text-[0.95rem] lg:hidden">{o.summary}</p>
+        </div>
+        <p class="mono pt-1 text-[var(--cb-ink)]">{o.duration}</p>
+        <div class="text-[0.95rem]">
+          <p class="hidden lg:block">{o.summary}</p>
+          {detailed && (
+            <ul class="ticks mt-4 text-[0.92rem]">
+              {o.includes.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+          <p class="meta mt-3">→ {written[o.slug] ?? 'Written summary'}</p>
+          {detailed && (
+            <p class="mt-3 text-[0.85rem] text-[var(--cb-ink-3)]">
+              <strong class="font-medium text-[var(--cb-ink-2)]">Best if:</strong> {o.forWhom}{' '}
+              <strong class="font-medium text-[var(--cb-ink-2)]">Before the call:</strong> {o.prep}
+            </p>
+          )}
+        </div>
+        <p class="ledger__price">
+          {o.priceLabel}
+          {o.price > 0 && <span class="meta ml-1 align-top">GBP</span>}
+        </p>
+        <div class="lg:text-right">
+          <a
+            href={getPermalink(`/book#${o.slug}`)}
+            class:list={['btn-cb !min-h-[2.9rem] text-[0.92rem]', !o.highlight && 'btn-cb--ghost']}
+            aria-label={`Book: ${o.name} (${o.priceLabel})`}
+          >
+            <span>{o.price === 0 ? 'Book free call' : 'Book'}</span>
+            <span class="btn-cb__icon !h-9 !w-9" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </article>
+    ))
+  }
+</div>
+<p class="meta mt-6">
+  Paid sessions are paid by card at booking (Stripe, inside Calendly). Every session runs on Zoom.
+</p>

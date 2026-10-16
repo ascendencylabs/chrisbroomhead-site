@@ -1,12 +1,13 @@
 ---
 import { OFFERS } from '~/data/site';
 
-const query = 'hide_gdpr_banner=1&primary_color=c4a060';
+// Colour params are honoured on paid Calendly plans and ignored otherwise.
+const query = 'hide_gdpr_banner=1&background_color=121412&text_color=ece8e1&primary_color=d6a54e';
 ---
 
 <cb-booking data-query={query}>
   <div class="grid gap-8 lg:grid-cols-[minmax(0,20rem)_1fr]">
-    <nav aria-label="Choose a consultation">
+    <nav aria-label="Choose a consultation" class="lg:sticky lg:top-28 lg:self-start">
       <ul class="grid gap-3">
         {
           OFFERS.map((offer, i) => (
@@ -15,13 +16,13 @@ const query = 'hide_gdpr_banner=1&primary_color=c4a060';
                 href={offer.url}
                 data-offer={offer.slug}
                 aria-current={i === 2 ? 'true' : undefined}
-                class="block rounded-xl border border-gray-200 p-4 transition hover:border-primary aria-[current=true]:border-primary aria-[current=true]:ring-1 aria-[current=true]:ring-primary dark:border-slate-700"
+                class="relative block rounded-2xl p-5 no-underline shadow-[inset_0_0_0_1px_var(--cb-line)] transition hover:shadow-[inset_0_0_0_1px_var(--cb-line-strong)] aria-[current=true]:bg-[rgb(214_165_78/0.06)] aria-[current=true]:shadow-[inset_0_0_0_1px_var(--cb-amber)]"
               >
                 <span class="flex items-baseline justify-between gap-3">
-                  <span class="font-semibold text-heading">{offer.shortName}</span>
-                  <span class="font-bold text-heading">{offer.priceLabel}</span>
+                  <span class="font-semibold tracking-tight text-[var(--cb-ink)]">{offer.shortName}</span>
+                  <span class="text-xl font-light tracking-tight text-[var(--cb-ink)]">{offer.priceLabel}</span>
                 </span>
-                <span class="mt-1 block text-sm text-muted">
+                <span class="meta mt-1.5 block">
                   {offer.duration}
                   {offer.existingClientsOnly ? ' · existing clients only' : ''}
                 </span>
@@ -30,7 +31,7 @@ const query = 'hide_gdpr_banner=1&primary_color=c4a060';
           ))
         }
       </ul>
-      <p class="mt-4 text-xs leading-5 text-muted">
+      <p class="meta mt-5 leading-5">
         Paid sessions are paid by card at booking (secure checkout by Stripe inside Calendly). Zoom details arrive in
         your confirmation email.
       </p>
@@ -38,7 +39,7 @@ const query = 'hide_gdpr_banner=1&primary_color=c4a060';
     <div>
       <div
         data-embed
-        class="h-[1000px] min-w-[320px] overflow-hidden rounded-2xl md:h-[760px] border border-gray-200 bg-white dark:border-slate-700"
+        class="h-[1000px] min-w-[300px] overflow-hidden rounded-[1.25rem] bg-[var(--cb-ground-2)] shadow-[inset_0_0_0_1px_var(--cb-line)] md:h-[760px]"
         aria-live="polite"
       >
         <noscript>

@@ -1,0 +1,152 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import ProtocolDoc from '~/components/site/ProtocolDoc.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import Faq from '~/components/site/Faq.astro';
+import { OFFERS } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'The written protocol',
+  description:
+    'Every paid consultation with Chris Broomhead ends in writing: a summary after 15-minute sessions, a written protocol summary within 48 hours for 30 minutes, and a structured written protocol within 72 hours for 60 minutes.',
+};
+
+const turnaround = [
+  {
+    slug: 'plan-design',
+    what: 'Written summary of the recommendations',
+    when: 'After the call',
+    send: 'Relevant bloodwork and history',
+  },
+  {
+    slug: 'consultation-30mins',
+    what: 'Detailed written protocol summary',
+    when: 'Within 48 hours',
+    send: 'Bloodwork, current protocol and history, 48 hours before',
+  },
+  {
+    slug: '60mincoachingcall',
+    what: 'Structured written protocol, phased',
+    when: 'Within 72 hours',
+    send: 'Bloodwork, protocols, medical history and questions, 72 hours before',
+  },
+];
+
+const rows = turnaround.map((t) => ({ ...t, offer: OFFERS.find((o) => o.slug === t.slug)! }));
+
+const principles = [
+  {
+    k: 'Built on your data',
+    v: 'Everything in it traces back to what you sent: your markers, what you run now, your history.',
+  },
+  { k: 'One objective first', v: 'One primary goal, so you can tell what is working and what is not.' },
+  { k: 'Sequenced', v: 'What changes first, what follows, and the points where you stop and review.' },
+  { k: 'Measurable', v: 'What to retest, and when, so the next decision is made on data, not memory.' },
+];
+
+const faqs = [
+  {
+    q: 'Is the written protocol medical advice?',
+    a: 'No. It is an educational, evidence-informed summary of the consultation. It does not diagnose or treat anything. Take it to your healthcare provider before you change anything.',
+  },
+  {
+    q: 'Can I share it?',
+    a: 'It is for your personal use. Please do not share or resell it. It is written for your data, so it would not fit anyone else anyway.',
+  },
+  {
+    q: 'What if I have questions after reading it?',
+    a: 'Book a £50 follow-up review. It is for clarification, progress, new bloodwork or adjustments.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="02"
+    label="The written protocol"
+    lines={['Every paid session', 'ends <em>in writing.</em>']}
+    lead="A call is easy to forget. A written protocol is not. Here is what you receive, and when."
+  >
+    <CtaButton href={getPermalink('/book')}>Book a consultation</CtaButton>
+  </PageHero>
+
+  <section class="section !pt-8" aria-labelledby="anatomy-title">
+    <div class="wrap grid items-start gap-16 lg:grid-cols-[1.05fr_1fr] lg:gap-24">
+      <div class="lg:sticky lg:top-28">
+        <ProtocolDoc />
+        <p class="meta mt-4">Illustrative structure. Every written protocol is specific to the client.</p>
+      </div>
+      <div>
+        <SectionHead idx="02.1" label="Anatomy">
+          <span id="anatomy-title">What is in it.</span>
+        </SectionHead>
+        <div class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            principles.map((p, i) => (
+              <div
+                class="grid gap-2 border-b border-[var(--cb-line)] py-7 sm:grid-cols-[11rem_1fr] sm:gap-8"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <p class="meta pt-1 uppercase tracking-[0.14em] text-[var(--cb-amber)]">{p.k}</p>
+                <p class="text-lg text-[var(--cb-ink)]">{p.v}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section relative" aria-labelledby="turnaround-title">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="wrap relative">
+      <SectionHead idx="02.2" label="Turnaround">
+        <span id="turnaround-title">When it <em>arrives.</em></span>
+      </SectionHead>
+      <div class="mt-14 overflow-x-auto">
+        <table class="w-full min-w-[40rem] border-t border-[var(--cb-line-strong)] text-left">
+          <thead>
+            <tr class="meta uppercase tracking-[0.14em]">
+              <th class="py-4 pr-6 font-normal">Session</th>
+              <th class="py-4 pr-6 font-normal">You receive</th>
+              <th class="py-4 pr-6 font-normal">When</th>
+              <th class="py-4 pr-6 font-normal">Send beforehand</th>
+              <th class="py-4 font-normal">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((r) => (
+                <tr class="border-t border-[var(--cb-line)] align-top">
+                  <td class="py-6 pr-6 text-lg font-medium text-[var(--cb-ink)]">{r.offer.duration}</td>
+                  <td class="py-6 pr-6">{r.what}</td>
+                  <td class="mono py-6 pr-6 text-[var(--cb-amber)]">{r.when}</td>
+                  <td class="py-6 pr-6 text-[0.95rem]">{r.send}</td>
+                  <td class="py-6 text-xl font-light text-[var(--cb-ink)]">{r.offer.priceLabel}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-8 max-w-2xl">
+        Not sure what to send? The free <a class="link-u" href={getPermalink('/free-guide')}
+          >Consultation Bloodwork Brief</a
+        > lists the markers to ask for and the history checklist to complete.
+      </p>
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="wp-faq">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20">
+      <SectionHead idx="02.3" label="Questions">
+        <span id="wp-faq">Good to know.</span>
+      </SectionHead>
+      <Faq items={faqs} />
+    </div>
+  </section>
+</Layout>

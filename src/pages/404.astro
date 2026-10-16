@@ -1,23 +1,21 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import { getHomePermalink } from '~/utils/permalinks';
-
-const title = `Error 404`;
+import Layout from '~/layouts/PageLayout.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import { getHomePermalink, getPermalink } from '~/utils/permalinks';
 ---
 
-<Layout metadata={{ title }}>
-  <section class="flex items-center h-full p-16">
-    <div class="container flex flex-col items-center justify-center px-5 mx-auto my-8">
-      <div class="max-w-md text-center">
-        <h2 class="mb-8 font-bold text-9xl">
-          <span class="sr-only">Error</span>
-          <span class="text-primary">404</span>
-        </h2>
-        <p class="text-3xl font-semibold md:text-3xl">Sorry, we couldn't find this page.</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          But don't worry, you can find plenty of other things on our homepage.
-        </p>
-        <a rel="noopener noreferrer" href={getHomePermalink()} class="btn ml-4">Back to homepage</a>
+<Layout metadata={{ title: 'Page not found', robots: { index: false, follow: false } }}>
+  <section class="hero !justify-center">
+    <div class="wrap relative">
+      <p class="eyebrow"><span class="idx">§ 404</span> No result</p>
+      <h1 class="display display-xl mt-6">
+        <span class="line-mask"><span style="--i:0">This page</span></span>
+        <span class="line-mask"><span class="thin" style="--i:1">isn’t in the record.</span></span>
+      </h1>
+      <p class="lead mt-8" data-fade>The link may be old, or mistyped. Everything else is one step away.</p>
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row" data-fade>
+        <CtaButton href={getHomePermalink()}>Back to the homepage</CtaButton>
+        <CtaButton href={getPermalink('/book')} variant="ghost">Book a consultation</CtaButton>
       </div>
     </div>
   </section>

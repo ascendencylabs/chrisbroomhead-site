@@ -1,0 +1,38 @@
+---
+import { STATS } from '~/data/site';
+import SectionHead from './SectionHead.astro';
+
+// Every number here is verified (see STATS in src/data/site.ts).
+const years = new Date().getFullYear() - STATS.firstYear;
+---
+
+<section class="section section--tight" aria-labelledby="record-title">
+  <div class="wrap">
+    <div class="grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20">
+      <SectionHead idx="01" label="The record">
+        <span id="record-title">Not a new idea. <span class="thin">A practice.</span></span>
+      </SectionHead>
+      <div class="grid gap-10 sm:grid-cols-3">
+        <div class="stat" data-reveal style="--d:0">
+          <span class="stat__num"><span data-count={STATS.sessions}>{STATS.sessions}</span></span>
+          <p class="mt-4 max-w-[15rem] text-[0.95rem]">
+            one-to-one sessions booked through Calendly since {STATS.firstYear}.
+          </p>
+        </div>
+        <div class="stat" data-reveal style="--d:1">
+          <span class="stat__num"><span data-count={STATS.people}>{STATS.people}</span></span>
+          <p class="mt-4 max-w-[15rem] text-[0.95rem]">different people have booked a session.</p>
+        </div>
+        <div class="stat" data-reveal style="--d:2">
+          <span class="stat__num"><span data-count={years}>{years}</span><span class="stat__unit">yrs</span></span>
+          <p class="mt-4 max-w-[15rem] text-[0.95rem]">
+            of booked sessions, from personal training to protocol design.
+          </p>
+        </div>
+      </div>
+    </div>
+    <p class="meta mt-12 lg:text-right">
+      Source: {STATS.source}, cancellations excluded. Checked {STATS.checked}.
+    </p>
+  </div>
+</section>

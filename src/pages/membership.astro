@@ -1,0 +1,84 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Protocol review — monthly',
+  description:
+    'A small, high-touch monthly protocol review for existing clients of Chris Broomhead. Places are limited.',
+};
+
+const month = [
+  { k: 'Check-in', v: 'A scheduled monthly call on Zoom to review progress against your objective.' },
+  { k: 'Data review', v: 'New bloodwork and your records reviewed before the call, not during it.' },
+  {
+    k: 'Written update',
+    v: 'Your written protocol updated after each check-in, so the plan always matches your data.',
+  },
+  { k: 'Between calls', v: 'A channel for short questions between check-ins.' },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="R"
+    label="Protocol review"
+    status="Existing clients · not open yet"
+    lines={['Monthly review.', '<em>Small by design.</em>']}
+    lead="For existing clients who want their protocol reviewed every month, not once. A limited number of places, so every review gets proper time."
+  >
+    <CtaButton href="#join" arrow="down">Register interest</CtaButton>
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="month-title">
+    <div class="wrap grid items-start gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="R.1" label="Each month">
+          <span id="month-title">What a month <em>includes.</em></span>
+        </SectionHead>
+        <div class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            month.map((m, i) => (
+              <div
+                class="grid gap-2 border-b border-[var(--cb-line)] py-7 sm:grid-cols-[11rem_1fr] sm:gap-8"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <p class="meta pt-1 uppercase tracking-[0.14em] text-[var(--cb-amber)]">{m.k}</p>
+                <p class="text-lg text-[var(--cb-ink)]">{m.v}</p>
+              </div>
+            ))
+          }
+        </div>
+        <div class="mt-12 grid gap-6 sm:grid-cols-2">
+          <div class="panel">
+            <p class="eyebrow"><span class="idx">✓</span> For</p>
+            <p class="mt-4">Clients who have had a paid consultation and are running a written protocol.</p>
+          </div>
+          <div class="panel">
+            <p class="eyebrow"><span class="idx">✕</span> Not</p>
+            <p class="mt-4">Volume coaching, a group programme, or medical care.</p>
+          </div>
+        </div>
+        <p class="mt-10">
+          Not a client yet? Start with a <a class="link-u" href={getPermalink('/work-with-me')}>consultation</a>.
+        </p>
+      </div>
+      <div class="lg:sticky lg:top-28">
+        <WaitlistPanel
+          stream="membership"
+          guide="protocol-review-membership"
+          title="Register interest"
+          note="Places and the monthly price go to registered clients first."
+          buttonText="Register interest"
+          successTitle="Interest registered."
+          successBody="You will hear first, by email, when places open."
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

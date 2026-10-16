@@ -1,48 +1,53 @@
 ---
-// Font family is provided by Astro's native Fonts API (see `fonts` in
-// astro.config.ts and <Font /> in Layout.astro), exposed as `--font-inter`.
-// To switch typefaces, change the `fonts` entry and repoint `--aw-font-*` below.
+// Design tokens for the "dark scientific editorial" direction.
+// Fonts come from Astro's Fonts API (astro.config.ts → `fonts`), exposed as
+// `--font-display` (Bricolage Grotesque) and `--font-mono` (JetBrains Mono).
+// The --aw-* names are kept so the AstroWind primitives still resolve.
 ---
 
 <style is:inline>
   :root {
-    --aw-font-sans: var(--font-inter);
-    --aw-font-serif: var(--font-inter);
-    --aw-font-heading: var(--font-inter);
+    color-scheme: dark;
 
-    --aw-color-primary: rgb(14 59 92);
-    --aw-color-secondary: rgb(10 44 70);
-    --aw-color-accent: rgb(150 112 48);
+    /* Ground: near-black with a faint green cast, layered in three steps. */
+    --cb-ground: #0b0c0b;
+    --cb-ground-2: #121412;
+    --cb-ground-3: #1a1d1a;
+    --cb-line: rgb(236 232 225 / 0.1);
+    --cb-line-strong: rgb(236 232 225 / 0.22);
 
-    --aw-color-text-heading: rgb(10 20 30);
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
-    --aw-color-bg-page: rgb(255 255 255);
+    /* Ink: bone, never pure white. Contrast on ground: 16.4 / 9.4 / 5.9 : 1. */
+    --cb-ink: #ece8e1;
+    --cb-ink-2: #b9b4aa;
+    --cb-ink-3: #8f8a81;
 
-    --aw-color-bg-page-dark: rgb(9 14 20);
+    /* Semantic accents. Amber = action. Assay = live data / status. */
+    --cb-amber: #d6a54e;
+    --cb-amber-hi: #e8bd6d;
+    --cb-assay: #82c6b3;
+    --cb-alert: #e7826b;
 
-    ::selection {
-      background-color: lavender;
-    }
+    --cb-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --cb-ease-in-out: cubic-bezier(0.87, 0, 0.13, 1);
+    --cb-gutter: clamp(1rem, 4vw, 3.5rem);
+
+    --aw-font-sans: var(--font-display);
+    --aw-font-serif: var(--font-display);
+    --aw-font-heading: var(--font-display);
+
+    --aw-color-primary: var(--cb-amber);
+    --aw-color-secondary: var(--cb-amber-hi);
+    --aw-color-accent: var(--cb-amber);
+    --aw-color-link: var(--cb-amber);
+    --aw-color-text-heading: var(--cb-ink);
+    --aw-color-text-default: var(--cb-ink-2);
+    --aw-color-text-muted: var(--cb-ink-3);
+    --aw-color-bg-page: var(--cb-ground);
+    --aw-color-bg-page-dark: var(--cb-ground);
   }
 
-  .dark {
-    --aw-font-sans: var(--font-inter);
-    --aw-font-serif: var(--font-inter);
-    --aw-font-heading: var(--font-inter);
-
-    --aw-color-primary: rgb(196 160 96);
-    --aw-color-secondary: rgb(176 141 87);
-    --aw-color-accent: rgb(214 184 128);
-
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgb(229 236 246);
-    --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(9 14 20);
-
-    ::selection {
-      background-color: black;
-      color: snow;
-    }
+  ::selection {
+    background-color: var(--cb-amber);
+    color: var(--cb-ground);
   }
 </style>

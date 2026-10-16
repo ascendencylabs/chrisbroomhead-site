@@ -1,0 +1,45 @@
+---
+// Pill button with a nested arrow capsule ("button in button").
+export interface Props {
+  href: string;
+  variant?: 'primary' | 'ghost';
+  block?: boolean;
+  magnetic?: boolean;
+  external?: boolean;
+  class?: string;
+  ariaLabel?: string;
+  arrow?: 'up-right' | 'down' | 'right';
+}
+
+const {
+  href,
+  variant = 'primary',
+  block = false,
+  magnetic = true,
+  external = false,
+  class: className = '',
+  ariaLabel,
+  arrow = 'up-right',
+} = Astro.props;
+
+const paths = {
+  'up-right': 'M2 10L10 2M10 2H4M10 2V8',
+  down: 'M6 1V11M6 11L1.5 6.5M6 11L10.5 6.5',
+  right: 'M1 6H11M11 6L6.5 1.5M11 6L6.5 10.5',
+};
+---
+
+<a
+  href={href}
+  class:list={['btn-cb', variant === 'ghost' && 'btn-cb--ghost', block && 'btn-cb--block', className]}
+  data-magnetic={magnetic ? '' : undefined}
+  aria-label={ariaLabel}
+  {...external ? { target: '_blank', rel: 'noopener' } : {}}
+>
+  <span><slot /></span>
+  <span class="btn-cb__icon" aria-hidden="true">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+      ><path d={paths[arrow]} stroke="currentColor" stroke-width="1.5"></path></svg
+    >
+  </span>
+</a>

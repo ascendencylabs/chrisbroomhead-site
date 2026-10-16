@@ -1,10 +1,11 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Headline from '~/components/ui/Headline.astro';
-import OfferCards from '~/components/site/OfferCards.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import SessionLedger from '~/components/site/SessionLedger.astro';
+import Pipeline from '~/components/site/Pipeline.astro';
+import Faq from '~/components/site/Faq.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
 import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -12,70 +13,91 @@ const metadata = {
   description:
     'Protocol design consultations with Chris Broomhead: free 15-minute suitability call, £50 15-minute session, £100 30-minute review, £150 60-minute comprehensive consultation.',
 };
+
+const inScope = [
+  'Protocol design and refinement',
+  'Sequencing, cycling and review points',
+  'Bloodwork interpretation in the context of your protocol',
+  'Hormonal, metabolic, recovery and cognitive strategy',
+  'Side-effect review and phased programme design',
+];
+
+const outScope = [
+  'Diagnosis or treatment of any medical condition',
+  'Prescriptions, or the supply of any medicine',
+  'Emergency advice. If you feel unwell, contact your GP, NHS 111 or emergency services.',
+];
+
+const faqs = [
+  {
+    q: 'How is payment taken?',
+    a: 'At booking, by card, through Stripe inside the Calendly page. You receive a receipt and a calendar invitation with the Zoom link.',
+  },
+  {
+    q: 'What happens if I do not send bloodwork in time?',
+    a: 'The session still runs, but the review is limited to what was sent. Send it 48 hours ahead for 30 minutes and 72 hours ahead for 60 minutes.',
+  },
+  {
+    q: 'How do I reschedule or cancel?',
+    a: 'Use the link in your confirmation email, or email admin@chrisbroomheadcoaching.com. See the terms for refunds.',
+  },
+  {
+    q: 'Can I book a follow-up?',
+    a: 'Yes. Existing clients can book a £50 follow-up review for progress, new bloodwork or adjustments.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <WidgetWrapper containerClass="max-w-7xl mx-auto">
-    <Headline
-      tagline="Work with me"
-      title="Consultations and prices"
-      subtitle="Every session runs on Zoom. Paid sessions are paid by card at booking. Each one includes a review of what you send before the call and a written summary after it."
-    />
-    <OfferCards detailed includeExistingClients />
-  </WidgetWrapper>
+  <PageHero
+    idx="01"
+    label="Consultations"
+    lines={['Consultations', '<em>and prices.</em>']}
+    lead="Every session runs on Zoom. Paid sessions are paid by card at booking. Each one includes a review of what you send before the call, and a written summary after it."
+  >
+    <div class="flex flex-col gap-4 sm:flex-row">
+      <CtaButton href={getPermalink('/book')}>Book a consultation</CtaButton>
+      <CtaButton href={getPermalink('/book#suitability')} variant="ghost">Free suitability call</CtaButton>
+    </div>
+  </PageHero>
 
-  <WidgetWrapper containerClass="max-w-4xl mx-auto">
-    <Headline tagline="Scope" title="What a consultation covers" />
-    <div class="grid gap-8 md:grid-cols-2">
-      <div>
-        <p class="font-semibold text-heading">In scope</p>
-        <ul class="mt-3 space-y-2 leading-7">
-          <li>— Peptide protocol design and refinement</li>
-          <li>— Dosing architecture, sequencing and cycling</li>
-          <li>— Bloodwork interpretation in the context of your protocol</li>
-          <li>— Hormonal, metabolic, recovery and cognitive strategy</li>
-          <li>— Side-effect review and phased programme design</li>
-        </ul>
-      </div>
-      <div>
-        <p class="font-semibold text-heading">Out of scope</p>
-        <ul class="mt-3 space-y-2 leading-7">
-          <li>— Diagnosis or treatment of any medical condition</li>
-          <li>— Prescriptions</li>
-          <li>— Emergency advice. If you feel unwell, contact your GP, NHS 111 or emergency services.</li>
-        </ul>
-        <p class="mt-4 text-sm text-muted">
-          Consultations are educational and evidence-informed. They are not medical advice. Discuss any changes with
-          your healthcare provider.
-        </p>
+  <section class="section !pt-10" aria-label="Sessions">
+    <div class="wrap">
+      <SessionLedger detailed />
+    </div>
+  </section>
+
+  <section class="section relative" aria-labelledby="scope-title">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="wrap relative">
+      <SectionHead idx="02" label="Scope">
+        <span id="scope-title">What a consultation <em>covers.</em></span>
+      </SectionHead>
+      <div class="mt-14 grid gap-6 md:grid-cols-2">
+        <div class="panel" data-reveal>
+          <p class="eyebrow"><span class="idx">IN</span> In scope</p>
+          <ul class="ticks mt-6 text-[1.05rem]">{inScope.map((i) => <li>{i}</li>)}</ul>
+        </div>
+        <div class="panel" data-reveal style="--d:1">
+          <p class="eyebrow"><span class="idx">OUT</span> Out of scope</p>
+          <ul class="ticks mt-6 text-[1.05rem]">{outScope.map((i) => <li>{i}</li>)}</ul>
+          <p class="meta mt-8 leading-6">
+            Consultations are educational and evidence-informed. They are not medical advice. Discuss any change with
+            your healthcare provider.
+          </p>
+        </div>
       </div>
     </div>
-  </WidgetWrapper>
+  </section>
 
-  <FAQs
-    title="Booking, payment and changes"
-    items={[
-      {
-        title: 'How is payment taken?',
-        description:
-          'At booking, by card, through Stripe inside the Calendly page. You receive a receipt and a calendar invitation with the Zoom link.',
-      },
-      {
-        title: 'What happens if I do not send bloodwork in time?',
-        description:
-          'The session still runs, but the review is limited to what was sent. Send it 48 hours ahead for 30 minutes and 72 hours ahead for 60 minutes.',
-      },
-      {
-        title: 'How do I reschedule or cancel?',
-        description:
-          'Use the link in your confirmation email, or email admin@chrisbroomheadcoaching.com. See the terms for refunds.',
-      },
-    ]}
-  />
+  <Pipeline />
 
-  <CallToAction
-    title="Ready when you are"
-    subtitle="Pick a session and a time. It takes about two minutes."
-    actions={[{ variant: 'primary', text: 'Book a consultation', href: getPermalink('/book') }]}
-  />
+  <section class="section" aria-labelledby="wwm-faq">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20">
+      <SectionHead idx="04" label="Questions">
+        <span id="wwm-faq">Booking, payment <span class="thin">and changes.</span></span>
+      </SectionHead>
+      <Faq items={faqs} />
+    </div>
+  </section>
 </Layout>

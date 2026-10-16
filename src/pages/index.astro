@@ -1,17 +1,24 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import Image from '~/components/common/Image.astro';
-import Steps2 from '~/components/widgets/Steps2.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Headline from '~/components/ui/Headline.astro';
-import OfferCards from '~/components/site/OfferCards.astro';
 import StructuredData from '~/components/common/StructuredData.astro';
-import portrait from '~/assets/images/chris-portrait.jpg';
-import { getPermalink } from '~/utils/permalinks';
+import HeroField from '~/components/site/HeroField.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import Marquee from '~/components/site/Marquee.astro';
+import StatsBand from '~/components/site/StatsBand.astro';
+import Pipeline from '~/components/site/Pipeline.astro';
+import SessionLedger from '~/components/site/SessionLedger.astro';
+import ProtocolDoc from '~/components/site/ProtocolDoc.astro';
+import Manifesto from '~/components/site/Manifesto.astro';
+import LeadForm from '~/components/site/LeadForm.astro';
+import Faq from '~/components/site/Faq.astro';
+import portrait from '~/assets/images/chris-navy.jpg';
+import profileWide from '~/assets/images/chris-profile-wide.jpg';
+import { getAsset, getPermalink } from '~/utils/permalinks';
 import { SITE } from 'astrowind:config';
-import { CONTACT, SOCIALS, OFFERS } from '~/data/site';
+import { CONTACT, SOCIALS, OFFERS, LEAD_MAGNET } from '~/data/site';
+import { streamById } from '~/config/streams';
 
 const metadata = {
   title: 'Chris Broomhead — Protocol Design Consultations',
@@ -47,165 +54,301 @@ const structuredData = {
     },
   ],
 };
+
+const topics = [
+  'Bloodwork interpretation',
+  'Protocol sequencing',
+  'Recovery',
+  'Metabolic health',
+  'Hormonal markers',
+  'Sleep',
+  'Cognition',
+  'Longevity',
+  'Side-effect review',
+  'Written protocols',
+];
+
+const contrasts = [
+  { k: 'Information', a: 'A different answer in every thread.', b: 'One plan, written for your data.' },
+  { k: 'Starting point', a: 'Started on someone else’s recommendation.', b: 'Started on your bloodwork.' },
+  {
+    k: 'Changes',
+    a: 'Three things changed at once. Nothing learned.',
+    b: 'One objective. One change at a time. Measured.',
+  },
+  { k: 'Afterwards', a: 'Nobody to ask when something shifts.', b: 'A follow-up review when your markers move.' },
+];
+
+const faqs = [
+  {
+    q: 'Is this medical advice?',
+    a: 'No. Consultations are educational and evidence-informed. They do not diagnose or treat any condition. Make decisions about implementation with your healthcare provider.',
+  },
+  {
+    q: 'Which session should I book?',
+    a: 'One specific question: the 15-minute protocol design session (£50). A full review of what you are running: 30 minutes (£100). A complex, multi-system case: 60 minutes (£150). Unsure: the free suitability call.',
+  },
+  {
+    q: 'Do I need bloodwork first?',
+    a: 'For the 30- and 60-minute sessions, yes. Recent bloodwork makes the session far more useful. The free Bloodwork Brief lists what to ask for.',
+  },
+  {
+    q: 'How do I pay?',
+    a: 'By card when you book. Checkout is handled by Stripe inside the Calendly booking page. Prices are in GBP.',
+  },
+  {
+    q: 'Where are you based?',
+    a: 'The United Kingdom. Every session runs on Zoom, so you can book from anywhere.',
+  },
+  {
+    q: 'Can I reschedule?',
+    a: 'Yes. Your confirmation email has a reschedule link. For anything else, email admin@chrisbroomheadcoaching.com.',
+  },
+];
+
+const heroLines = [
+  { t: "You don't need", cls: '' },
+  { t: 'more compounds.', cls: 'thin' },
+  { t: 'You need a protocol', cls: '' },
+  { t: 'built on your <em>bloodwork.</em>', cls: '' },
+];
 ---
 
 <Layout metadata={metadata}>
-  <StructuredData slot="head" schema={structuredData} />
+  <Fragment slot="head">
+    <StructuredData schema={structuredData} />
+  </Fragment>
 
-  <section class="relative not-prose md:-mt-[76px]">
-    <div
-      class="mx-auto grid max-w-7xl items-center gap-10 px-4 pt-8 pb-12 sm:px-6 md:pt-[124px] md:pb-20 lg:grid-cols-[1.1fr_0.9fr]"
-    >
+  <!-- §00 Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <HeroField />
+    <div class="hero__veil" aria-hidden="true"></div>
+
+    <div class="wrap relative z-10 grid items-end gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] lg:gap-16">
       <div>
-        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">
-          Protocol design consultations
-        </p>
-        <h1 class="mt-4 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-6xl">
-          You don't need more compounds.
-          <span class="block text-accent dark:text-primary">You need a protocol built on your bloodwork.</span>
+        <p class="eyebrow" data-fade style="--i:0"><span class="idx">§ 00</span> Protocol design · UK · Zoom</p>
+        <h1 id="hero-title" class="display mt-8 text-[clamp(2.7rem,6.3vw,7.25rem)]">
+          {
+            heroLines.map((l, i) => (
+              <span class="line-mask">
+                <span class={l.cls} style={`--i:${i}`} set:html={l.t} />
+              </span>
+            ))
+          }
         </h1>
-        <p class="mt-6 max-w-xl text-lg leading-8 text-muted dark:text-slate-300">
-          Private Zoom consultations with Chris Broomhead. Your bloodwork and history are reviewed before the call.
-          Every paid session ends with a written summary of your protocol. From £50, booked and paid online in two
-          minutes.
-        </p>
-        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a class="btn-primary" href={getPermalink('/book')}>Book a consultation</a>
-          <a class="btn-secondary" href={getPermalink('/free-guide')}>Get the free Bloodwork Brief</a>
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-fade style="--i:1">
+          <CtaButton href={getPermalink('/book')}>Book a consultation</CtaButton>
+          <CtaButton href={getPermalink('/free-guide')} variant="ghost" arrow="down">Free Bloodwork Brief</CtaButton>
         </div>
-        <p class="mt-6 text-sm text-muted">
-          Free 15-minute suitability call available. Paid sessions £50, £100 and £150.
+        <p class="meta mt-8 max-w-xl" data-fade style="--i:2">
+          Free 15-minute suitability call. Paid sessions £50 · £100 · £150, booked and paid online in two minutes.
         </p>
       </div>
-      <div class="mx-auto w-full max-w-md lg:max-w-none">
-        <Image
-          src={portrait}
-          alt="Chris Broomhead in a navy shirt, standing against a corrugated metal wall"
-          class="aspect-[4/5] w-full rounded-2xl object-cover object-top shadow-xl"
-          widths={[400, 640, 900]}
-          sizes="(max-width: 1023px) 90vw, 560px"
-          width={900}
-          height={1125}
-          loading="eager"
-          fetchpriority="high"
-          format="webp"
-        />
+
+      <figure class="plate mx-auto w-full max-w-[22rem] lg:mx-0" data-fade style="--i:3">
+        <span class="crosshair -left-[7px] -top-[7px]" aria-hidden="true"></span>
+        <span class="crosshair -bottom-[7px] -right-[7px]" aria-hidden="true"></span>
+        <div class="plate__img aspect-[4/5]">
+          <Image
+            src={portrait}
+            alt="Chris Broomhead in a navy shirt, standing against a corrugated metal wall"
+            widths={[360, 540, 720, 1080]}
+            sizes="(max-width: 1023px) 88vw, 352px"
+            layout="none"
+            loading="eager"
+            fetchpriority="high"
+            format="webp"
+            class="object-[50%_18%]"
+          />
+        </div>
+        <figcaption class="plate__cap">
+          <span class="meta">Fig. 01</span>
+          <span class="meta">Chris Broomhead · UK</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="wrap relative z-10 mt-14 hidden items-center gap-4 lg:flex" aria-hidden="true">
+      <span class="h-px w-16 bg-[var(--cb-line-strong)]"></span>
+      <span class="meta uppercase tracking-[0.16em]">Scroll for the record</span>
+    </div>
+  </section>
+
+  <Marquee label="Topics covered in consultations" items={topics} />
+
+  <!-- §01 The record -->
+  <StatsBand />
+
+  <!-- §02 The problem -->
+  <section class="section relative" aria-labelledby="problem-title">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="wrap relative">
+      <SectionHead idx="02" label="The problem">
+        <span id="problem-title">Most people collect compounds. <span class="thin">Few run a protocol.</span></span>
+      </SectionHead>
+      <div class="mt-16 border-t border-[var(--cb-line-strong)]">
+        <div
+          class="meta hidden grid-cols-[12rem_1fr_1fr] gap-8 py-4 uppercase tracking-[0.14em] md:grid"
+          aria-hidden="true"
+        >
+          <span></span><span>The forum version</span><span class="text-[var(--cb-amber)]">The protocol version</span>
+        </div>
+        {
+          contrasts.map((c, i) => (
+            <div
+              class="grid gap-3 border-b border-[var(--cb-line)] py-7 md:grid-cols-[12rem_1fr_1fr] md:gap-8"
+              data-reveal
+              style={`--d:${i}`}
+            >
+              <p class="meta pt-1 uppercase tracking-[0.14em]">{c.k}</p>
+              <p class="text-lg text-[var(--cb-ink-3)] line-through decoration-[var(--cb-line-strong)] md:text-xl">
+                <span class="sr-only">The forum version: </span>
+                {c.a}
+              </p>
+              <p class="text-lg font-medium tracking-tight text-[var(--cb-ink)] md:text-xl">
+                <span class="sr-only">The protocol version: </span>
+                {c.b}
+              </p>
+            </div>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <WidgetWrapper id="consultations" containerClass="max-w-7xl mx-auto">
-    <Headline
-      tagline="Work with me"
-      title="Four ways in. Clear prices."
-      subtitle="Not sure which one? Start with the free 15-minute suitability call and you will be pointed to the right format."
-    />
-    <OfferCards />
-    <p class="mt-8 text-center text-sm text-muted">
-      Already a client? <a class="underline" href={getPermalink('/book#follow-up-review')}
-        >Book a £50 follow-up review</a
-      >. Full details on the <a class="underline" href={getPermalink('/work-with-me')}>Work with me</a> page.
-    </p>
-  </WidgetWrapper>
+  <!-- §03 How it works (pinned) -->
+  <Pipeline />
 
-  <Steps2
-    tagline="How it works"
-    title="From booking to written protocol"
-    subtitle="The work starts before the call. That is why the call is worth paying for."
-    callToAction={{ variant: 'primary', text: 'Choose a session', href: getPermalink('/book') }}
-    items={[
-      {
-        title: '1. Book and pay online',
-        description: 'Pick a time that suits you. Payment is taken securely at booking. Zoom details arrive by email.',
-        icon: 'tabler:calendar-check',
-      },
-      {
-        title: '2. Send your data',
-        description:
-          'Bloodwork, current protocols and usage history. 48 hours ahead for a 30-minute session, 72 hours for 60 minutes.',
-        icon: 'tabler:file-description',
-      },
-      {
-        title: '3. The consultation',
-        description:
-          'Selection, dosing architecture, sequencing, ancillary support. Built on your data, not guesswork.',
-        icon: 'tabler:video',
-      },
-      {
-        title: '4. Written protocol',
-        description:
-          'A written summary after every paid session. Within 48 hours for 30 minutes, 72 hours for 60 minutes.',
-        icon: 'tabler:clipboard-text',
-      },
-    ]}
-  />
-
-  <WidgetWrapper id="why" containerClass="max-w-5xl mx-auto">
-    <Headline tagline="The problem" title="Most people collect compounds. Few run a protocol." />
-    <div class="grid gap-8 md:grid-cols-3">
-      <div>
-        <p class="text-lg font-semibold text-heading">Conflicting information</p>
-        <p class="mt-2 leading-7">
-          Every forum gives a different dose. Every video gives a different stack. You end up going in circles.
+  <!-- §04 Sessions -->
+  <section class="section" id="consultations" aria-labelledby="sessions-title">
+    <div class="wrap">
+      <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        <SectionHead idx="04" label="Sessions">
+          <span id="sessions-title">Four ways in. <em>Clear prices.</em></span>
+        </SectionHead>
+        <p class="max-w-sm" data-reveal>
+          Not sure which one? Start with the free 15-minute suitability call and you will be pointed to the right
+          format.
         </p>
       </div>
-      <div>
-        <p class="text-lg font-semibold text-heading">No data behind the plan</p>
-        <p class="mt-2 leading-7">
-          A protocol written without bloodwork is a guess. Your markers decide what to change, and in what order.
-        </p>
-      </div>
-      <div>
-        <p class="text-lg font-semibold text-heading">Nobody to ask</p>
-        <p class="mt-2 leading-7">
-          You want a straight answer from someone who does this every week. That is what a consultation is for.
-        </p>
+      <div class="mt-14">
+        <SessionLedger />
       </div>
     </div>
-  </WidgetWrapper>
+  </section>
 
-  <FAQs
-    tagline="Questions"
-    title="Before you book"
-    items={[
-      {
-        title: 'Is this medical advice?',
-        description:
-          'No. Consultations are educational and evidence-informed. They do not diagnose or treat any condition. Make decisions about implementation with your healthcare provider.',
-      },
-      {
-        title: 'Which session should I book?',
-        description:
-          'One specific question: the 15-minute protocol design session (£50). A full review of what you are running: 30 minutes (£100). A complex, multi-system case: 60 minutes (£150). Unsure: the free suitability call.',
-      },
-      {
-        title: 'Do I need bloodwork first?',
-        description:
-          'For the 30- and 60-minute sessions, yes. Recent bloodwork makes the session far more useful. The free Bloodwork Brief lists what to ask for.',
-      },
-      {
-        title: 'How do I pay?',
-        description:
-          'By card when you book. Checkout is handled by Stripe inside the Calendly booking page. Prices are in GBP.',
-      },
-      {
-        title: 'Where are you based?',
-        description: 'The United Kingdom. Every session runs on Zoom, so you can book from anywhere.',
-      },
-      {
-        title: 'Can I reschedule?',
-        description:
-          'Yes. Your confirmation email has a reschedule link. For anything else, email admin@chrisbroomheadcoaching.com.',
-      },
-    ]}
+  <!-- §05 What you get -->
+  <section class="section relative overflow-clip" aria-labelledby="deliverable-title">
+    <div class="wrap grid items-center gap-16 lg:grid-cols-[1fr_1.05fr] lg:gap-24">
+      <div>
+        <SectionHead idx="05" label="What you get">
+          <span id="deliverable-title">Every paid session ends <em>in writing.</em></span>
+        </SectionHead>
+        <div class="body-copy mt-8 max-w-xl" data-reveal>
+          <p>
+            A call is easy to forget. A written protocol is not. After every paid session you receive a summary you can
+            follow, review and take to your doctor.
+          </p>
+          <p>
+            It is built on what you sent before the call: your bloodwork, what you are running now, and your history.
+            Nothing in it is generic.
+          </p>
+        </div>
+        <ul class="mt-10 grid gap-px overflow-hidden rounded-2xl bg-[var(--cb-line)] sm:grid-cols-3" data-reveal>
+          <li class="bg-[var(--cb-ground)] p-5">
+            <span class="mono text-[var(--cb-amber)]">15 min</span><p class="mt-2 text-sm">Summary after the call</p>
+          </li>
+          <li class="bg-[var(--cb-ground)] p-5">
+            <span class="mono text-[var(--cb-amber)]">30 min</span><p class="mt-2 text-sm">
+              Written protocol summary within 48 hours
+            </p>
+          </li>
+          <li class="bg-[var(--cb-ground)] p-5">
+            <span class="mono text-[var(--cb-amber)]">60 min</span><p class="mt-2 text-sm">
+              Structured written protocol within 72 hours
+            </p>
+          </li>
+        </ul>
+        <p class="mt-8">
+          <a class="link-u" href={getPermalink(streamById('written-protocol').path)}>How the written protocol works →</a
+          >
+        </p>
+      </div>
+      <div class="relative lg:pl-6">
+        <div
+          class="absolute -inset-10 -z-10 rounded-full bg-[radial-gradient(closest-side,rgb(214_165_78/0.12),transparent)]"
+          aria-hidden="true"
+        >
+        </div>
+        <div class="rotate-0 lg:rotate-[1.5deg]">
+          <ProtocolDoc />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Manifesto
+    image={profileWide}
+    alt="Chris Broomhead in profile, looking off camera"
+    text="A protocol written without bloodwork is a *guess.* Your markers decide what changes, and in what *order.*"
+    attribution="Chris Broomhead"
   />
 
-  <CallToAction
-    title="Stop guessing. Get the protocol written down."
-    subtitle="Free 15-minute suitability call, or go straight to a paid session from £50."
-    actions={[
-      { variant: 'primary', text: 'Book a consultation', href: getPermalink('/book') },
-      { text: 'Free suitability call', href: getPermalink('/book#suitability') },
-    ]}
-  />
+  <!-- §06 Free first -->
+  <section class="section" aria-labelledby="free-title">
+    <div class="wrap">
+      <SectionHead idx="06" label="Start free">
+        <span id="free-title">Not ready to book? <span class="thin">Start here.</span></span>
+      </SectionHead>
+      <div class="mt-14 grid gap-6 lg:grid-cols-2">
+        <div class="panel spot" data-reveal style="--d:0">
+          <p class="eyebrow"><span class="idx">PDF</span> Free guide</p>
+          <h3 class="h3 mt-5">{LEAD_MAGNET.title}</h3>
+          <p class="mt-3 max-w-md">
+            What to test, how to prepare for the draw, and what to gather before any protocol conversation.
+          </p>
+          <div class="mt-8">
+            <LeadForm
+              guide={LEAD_MAGNET.guideId}
+              source={streamById('free-guides').leadSource}
+              tags={['lead-magnet', 'bloodwork-brief', 'website', 'home']}
+              buttonText="Send me the brief"
+              successTitle="Done. Your brief is ready."
+              successBody="Download it below. When your bloodwork is back, book a session and send it over 48 to 72 hours before the call."
+              downloadHref={getAsset(LEAD_MAGNET.file)}
+              downloadText="Download the PDF"
+            />
+          </div>
+        </div>
+        <div class="panel spot" data-reveal style="--d:1">
+          <p class="eyebrow"><span class="idx">Email</span> Newsletter</p>
+          <h3 class="h3 mt-5">The Operator’s Lab</h3>
+          <p class="mt-3 max-w-md">
+            One mechanism per issue, explained properly: the problem, the mechanism, and what it means for how a
+            protocol is built.
+          </p>
+          <div class="mt-8">
+            <LeadForm
+              guide="operators-lab"
+              source={streamById('newsletter').leadSource}
+              tags={['newsletter', 'operators-lab', 'website', 'home']}
+              buttonText="Join The Operator’s Lab"
+              successTitle="You are on the list."
+              successBody="The first issue comes straight to your inbox."
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §07 Questions -->
+  <section class="section pt-0" aria-labelledby="faq-title">
+    <div class="wrap grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20">
+      <SectionHead idx="07" label="Questions">
+        <span id="faq-title">Before you book.</span>
+      </SectionHead>
+      <Faq items={faqs} />
+    </div>
+  </section>
 </Layout>

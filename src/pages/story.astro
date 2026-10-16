@@ -1,0 +1,115 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import Image from '~/components/common/Image.astro';
+import athlete from '~/assets/images/chris-athlete.jpg';
+import profile from '~/assets/images/chris-profile.jpg';
+import { SOCIALS } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'The story',
+  description: 'A motorbike crash in Thailand, the decline that followed, and the rebuild.',
+};
+
+// DRAFT for Chris to approve (hidden: streams.ts → story.launched = false).
+// Only facts recorded in Chris's own notes are used: the crash happened in
+// Thailand; a friend looked after him every night for two weeks; his mental and
+// physical health declined afterwards; the recovery is the story he tells in
+// order on Instagram. Nothing else is added.
+const chapters = [
+  {
+    n: '01',
+    k: 'The crash',
+    t: 'A motorbike crash in Thailand.',
+    v: 'Everything that follows on this page started there.',
+  },
+  {
+    n: '02',
+    k: 'The fortnight after',
+    t: 'Two weeks of being looked after.',
+    v: 'For two weeks, a friend looked after me every night. I could not have done that part alone.',
+  },
+  {
+    n: '03',
+    k: 'The decline',
+    t: 'The injuries were not the whole of it.',
+    v: 'My physical health went down, and my mental health went with it. That part lasted longer than the injuries did.',
+  },
+  {
+    n: '04',
+    k: 'The rebuild',
+    t: 'Recovery is a process, not an event.',
+    v: 'Rebuilding is where my interest in bloodwork and recovery stopped being academic. It is the reason this work is built on data, not opinion.',
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="S"
+    label="Story"
+    lines={['The crash.', 'The decline.', '<em>The rebuild.</em>']}
+    lead="Before the consultations, there was a motorbike crash in Thailand, and everything that came after it."
+    image={profile}
+    imageAlt="Chris Broomhead, close-up, looking off camera"
+    imagePosition="50% 22%"
+    caption={['Fig. S1', 'Chris Broomhead']}
+  />
+
+  <section class="section !pt-6" aria-label="Chapters">
+    <div class="wrap">
+      <ol class="border-t border-[var(--cb-line-strong)]">
+        {
+          chapters.map((c, i) => (
+            <li
+              class="grid gap-4 border-b border-[var(--cb-line)] py-12 lg:grid-cols-[12rem_1fr_1fr] lg:gap-12"
+              data-reveal
+              style={`--d:${i % 2}`}
+            >
+              <p class="meta uppercase tracking-[0.14em]">
+                <span class="text-[var(--cb-amber)]">{c.n}</span> {c.k}
+              </p>
+              <h2 class="display display-m !text-[clamp(1.9rem,3.4vw,3.2rem)]">{c.t}</h2>
+              <p class="text-lg leading-8">{c.v}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="story-now">
+    <div class="wrap grid items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+      <figure class="plate" data-reveal="clip">
+        <div class="plate__img aspect-[4/5]">
+          <Image
+            src={athlete}
+            alt="Chris Broomhead in a training environment, opening a navy shirt"
+            widths={[360, 540, 720, 1080]}
+            sizes="(max-width: 1023px) 88vw, 520px"
+            layout="none"
+            format="webp"
+            style="object-position:50% 25%"
+          />
+        </div>
+        <figcaption class="plate__cap"><span class="meta">Fig. S2</span><span class="meta">Now</span></figcaption>
+      </figure>
+      <div>
+        <SectionHead idx="S.1" label="Now">
+          <span id="story-now">Built on data, <em>not opinion.</em></span>
+        </SectionHead>
+        <p class="lead mt-6" data-reveal>
+          The story is being told in order on Instagram. The work it led to is the consultations: a review of your data
+          before the call, and a written protocol after it.
+        </p>
+        <div class="mt-10 flex flex-col gap-4 sm:flex-row" data-reveal>
+          <CtaButton href={getPermalink('/work-with-me')}>See the consultations</CtaButton>
+          {SOCIALS.map((s) => <CtaButton href={s.href} variant="ghost" external>{`Follow ${s.handle}`}</CtaButton>)}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

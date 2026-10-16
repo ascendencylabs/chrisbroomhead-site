@@ -1,0 +1,85 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import LeadForm from '~/components/site/LeadForm.astro';
+import { streamById } from '~/config/streams';
+
+const metadata = {
+  title: "The Operator's Lab — newsletter",
+  description:
+    "The Operator's Lab: a free email newsletter from Chris Broomhead. One mechanism per issue, explained properly. Education, not hype.",
+};
+
+const anatomy = [
+  { n: '01', k: 'The problem', v: 'What most people get wrong, and why it matters.' },
+  { n: '02', k: 'The mechanism', v: 'The biology, and what the evidence does and does not show.' },
+  { n: '03', k: 'The protocol', v: 'What it changes about how a protocol should be built.' },
+  { n: '04', k: 'The application', v: 'The real-world context: where it holds up, and where it does not.' },
+];
+
+const pillars = [
+  'Mechanisms',
+  'Protocol design',
+  'Reading the evidence',
+  'Recovery',
+  'Metabolic health',
+  'Sleep',
+  'Longevity',
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="N"
+    label="Newsletter"
+    lines={["The Operator's Lab."]}
+    lead="One mechanism per issue, explained properly. No listicles, no hype, no recycled content. Free, by email."
+  />
+
+  <section class="section !pt-6" aria-labelledby="ol-anatomy">
+    <div class="wrap grid items-start gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="N.1" label="Every issue">
+          <span id="ol-anatomy">Same structure. <span class="thin">Every time.</span></span>
+        </SectionHead>
+        <div class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            anatomy.map((a, i) => (
+              <div
+                class="grid grid-cols-[3rem_1fr] gap-4 border-b border-[var(--cb-line)] py-6 sm:grid-cols-[3rem_11rem_1fr]"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <span class="meta pt-1 text-[var(--cb-amber)]">{a.n}</span>
+                <span class="text-lg font-medium tracking-tight text-[var(--cb-ink)]">{a.k}</span>
+                <span class="col-start-2 sm:col-start-auto">{a.v}</span>
+              </div>
+            ))
+          }
+        </div>
+        <div class="mt-10 flex flex-wrap gap-2" data-reveal>
+          {pillars.map((p) => <span class="tag tag--muted">{p}</span>)}
+        </div>
+        <p class="meta mt-8 max-w-lg leading-6">
+          Educational content only. Not medical advice. Issues never recommend where to buy anything.
+        </p>
+      </div>
+      <div class="panel spot lg:sticky lg:top-28" data-reveal>
+        <p class="eyebrow"><span class="idx">Free</span> Subscribe</p>
+        <h2 class="h3 mt-5">Get the next issue.</h2>
+        <p class="mt-3">Your first name and email. Nothing else.</p>
+        <div class="mt-8">
+          <LeadForm
+            guide="operators-lab"
+            source={streamById('newsletter').leadSource}
+            tags={['newsletter', 'operators-lab', 'website']}
+            buttonText="Join The Operator’s Lab"
+            successTitle="You are on the list."
+            successBody="The first issue comes straight to your inbox."
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,6 +1,6 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import PageHero from '~/components/site/PageHero.astro';
 import { Icon } from 'astro-icon/components';
 import { CONTACT, SOCIALS } from '~/data/site';
 import { getPermalink } from '~/utils/permalinks';
@@ -24,36 +24,39 @@ const cards = [
 ---
 
 <Layout metadata={metadata}>
-  <WidgetWrapper containerClass="max-w-4xl mx-auto">
-    <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">Contact</p>
-    <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
-      Get in touch
-    </h1>
-    <p class="mt-6 max-w-2xl text-lg leading-8">
-      The fastest way to work together is to <a class="underline" href={getPermalink('/book')}>book a session</a>. For
-      anything else, email or call.
-    </p>
-
-    <div class="mt-10 grid gap-6 sm:grid-cols-2">
-      {
-        cards.map((c) => (
-          <a
-            href={c.href}
-            {...('external' in c ? { target: '_blank', rel: 'me noopener' } : {})}
-            class="flex items-start gap-4 rounded-2xl border border-gray-200 p-6 hover:border-primary dark:border-slate-700"
-          >
-            <Icon name={c.icon} class="h-7 w-7 flex-none text-primary" aria-hidden="true" />
-            <span>
-              <span class="block font-semibold text-heading">{c.label}</span>
-              <span class="mt-1 block break-all">{c.value}</span>
-            </span>
-          </a>
-        ))
-      }
+  <PageHero
+    idx="C"
+    label="Contact"
+    lines={['Get in touch.']}
+    lead="The fastest way to work together is to book a session. For anything else, email or call."
+  />
+  <section class="section !pt-6" aria-label="Contact details">
+    <div class="wrap">
+      <div class="grid gap-px overflow-hidden rounded-[1.5rem] bg-[var(--cb-line)] sm:grid-cols-2">
+        {
+          cards.map((c, i) => (
+            <a
+              href={c.href}
+              {...('external' in c ? { target: '_blank', rel: 'me noopener' } : {})}
+              class="spot group relative flex items-start gap-5 bg-[var(--cb-ground)] p-7 no-underline transition hover:bg-[var(--cb-ground-2)] md:p-10"
+              data-reveal
+              style={`--d:${i}`}
+            >
+              <Icon name={c.icon} class="h-6 w-6 flex-none text-[var(--cb-amber)]" aria-hidden="true" />
+              <span>
+                <span class="meta block uppercase tracking-[0.14em]">{c.label}</span>
+                <span class="mt-2 block text-xl tracking-tight text-[var(--cb-ink)] [overflow-wrap:anywhere] md:text-2xl">
+                  {c.value}
+                </span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+      <p class="meta mt-10 leading-6">
+        {CONTACT.name}, trading as {CONTACT.tradingAs}. {CONTACT.location}. Not for medical emergencies: call 999 or NHS
+        111.
+      </p>
     </div>
-
-    <p class="mt-10 text-sm text-muted">
-      {CONTACT.name}, trading as {CONTACT.tradingAs}. {CONTACT.location}. Not for medical emergencies: call 999 or NHS 111.
-    </p>
-  </WidgetWrapper>
+  </section>
 </Layout>

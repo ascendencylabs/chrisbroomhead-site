@@ -1,0 +1,57 @@
+---
+// A waitlist / interest form for one income stream. Records demand in
+// Supabase `leads` with that stream's source tag (src/config/streams.ts).
+import LeadForm from './LeadForm.astro';
+import { streamById, type StreamId } from '~/config/streams';
+
+export interface Props {
+  stream: StreamId;
+  guide: string;
+  title: string;
+  note?: string;
+  buttonText: string;
+  successTitle?: string;
+  successBody?: string;
+  role?: { label: string; options: string[] };
+  message?: { label: string; placeholder?: string; required?: boolean };
+  phone?: boolean;
+  consent?: string;
+  id?: string;
+}
+
+const {
+  stream,
+  guide,
+  title,
+  note,
+  buttonText,
+  successTitle = 'You are on the list.',
+  successBody = 'You will hear first, by email, when it opens.',
+  role,
+  message,
+  phone,
+  consent,
+  id = 'join',
+} = Astro.props;
+const s = streamById(stream);
+---
+
+<div class="panel spot" id={id} data-reveal>
+  <p class="eyebrow"><span class="idx">→</span> {s.launched ? 'Open' : 'Opening soon'}</p>
+  <h2 class="h3 mt-5">{title}</h2>
+  {note && <p class="mt-3 max-w-md">{note}</p>}
+  <div class="mt-8">
+    <LeadForm
+      guide={guide}
+      source={s.leadSource}
+      tags={[stream, 'waitlist', 'website']}
+      buttonText={buttonText}
+      successTitle={successTitle}
+      successBody={successBody}
+      role={role}
+      message={message}
+      phone={phone}
+      consent={consent}
+    />
+  </div>
+</div>

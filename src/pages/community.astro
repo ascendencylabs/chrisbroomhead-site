@@ -1,63 +1,90 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import LeadForm from '~/components/site/LeadForm.astro';
-import { Icon } from 'astro-icon/components';
-import { SOCIALS } from '~/data/site';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import { communityUrl } from '~/config/streams';
 
 const metadata = {
   title: 'Community',
-  description: 'Join the waitlist for the Chris Broomhead community, and follow along on social.',
+  description: 'A private community for people running their own protocols. Join the waitlist.',
 };
+
+const promise = [
+  {
+    k: 'Protocol breakdowns',
+    v: 'How a protocol is reasoned through, start to finish: objective, baseline, sequence, review.',
+  },
+  {
+    k: 'Bloodwork discussion',
+    v: 'Reading markers in context, what to retest and when, and how to prepare for a draw.',
+  },
+  { k: 'Direct access', v: 'Questions answered by Chris in the group, not by a team.' },
+  { k: 'A serious room', v: 'People who keep records and measure what they change. No hype, no selling.' },
+];
+
+const rules = [
+  'Education only. No medical advice, no diagnosis, no prescriptions.',
+  'No buying, selling or sourcing of any product or medicine, in posts or in messages.',
+  'Bring data. Opinions are welcome; evidence is better.',
+  'Respect privacy. What members share stays in the group.',
+];
 ---
 
 <Layout metadata={metadata}>
-  <WidgetWrapper containerClass="max-w-6xl mx-auto">
-    <div class="grid items-start gap-12 lg:grid-cols-2">
+  <PageHero
+    idx="CO"
+    label="Community"
+    status="Not open yet"
+    lines={['A room for people', 'who run <em>a protocol.</em>']}
+    lead="A private community for people running their own protocols: protocol breakdowns, bloodwork discussion, and direct access to Chris. It is being built now."
+  >
+    {
+      communityUrl ? (
+        <CtaButton href={communityUrl} external>
+          Join the community
+        </CtaButton>
+      ) : (
+        <CtaButton href="#join" arrow="down">
+          Join the waitlist
+        </CtaButton>
+      )
+    }
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="co-promise">
+    <div class="wrap grid items-start gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
       <div>
-        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">Community</p>
-        <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
-          The community is being built. Get in first.
-        </h1>
-        <p class="mt-6 text-lg leading-8">
-          A private community for people running their own protocols: protocol breakdowns, bloodwork discussion and direct
-          access to Chris. It is not open yet.
-        </p>
-        <p class="mt-4 leading-7">Join the waitlist and you will be told first when the doors open.</p>
-        <div class="mt-10">
-          <p class="font-semibold text-heading">Follow along now</p>
-          <ul class="mt-4 space-y-3">
-            {
-              SOCIALS.map((s) => (
-                <li>
-                  <a
-                    class="inline-flex items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 hover:border-primary dark:border-slate-700"
-                    href={s.href}
-                    rel="me noopener"
-                    target="_blank"
-                  >
-                    <Icon name={s.icon} class="h-6 w-6" aria-hidden="true" />
-                    <span>
-                      {s.label} <span class="text-muted">{s.handle}</span>
-                    </span>
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
+        <SectionHead idx="CO.1" label="Inside">
+          <span id="co-promise">What it is <em>for.</em></span>
+        </SectionHead>
+        <div class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            promise.map((p, i) => (
+              <div
+                class="grid gap-2 border-b border-[var(--cb-line)] py-7 sm:grid-cols-[13rem_1fr] sm:gap-8"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <p class="text-lg font-medium tracking-tight text-[var(--cb-ink)]">{p.k}</p>
+                <p>{p.v}</p>
+              </div>
+            ))
+          }
         </div>
+        <h3 class="h3 mt-16">House rules</h3>
+        <ul class="ticks mt-6">{rules.map((r) => <li>{r}</li>)}</ul>
       </div>
-      <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/60 md:p-8">
-        <p class="text-xl font-bold text-heading">Join the waitlist</p>
-        <p class="mt-1 mb-6 text-sm text-muted">One email when it opens.</p>
-        <LeadForm
+      <div class="lg:sticky lg:top-28">
+        <WaitlistPanel
+          stream="community"
           guide="community-waitlist"
-          tags={['community-waitlist', 'skool', 'website']}
+          title="Join the waitlist"
+          note="One email when the doors open. Waitlist members get in first."
           buttonText="Join the waitlist"
-          successTitle="You are on the list."
-          successBody="You will hear first when the community opens."
         />
       </div>
     </div>
-  </WidgetWrapper>
+  </section>
 </Layout>

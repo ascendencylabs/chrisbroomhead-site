@@ -1,0 +1,87 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: "The Operator's Lab — Members",
+  description: "The paid tier of The Operator's Lab: monthly long-form briefings for readers who want the full depth.",
+};
+
+const tiers = [
+  {
+    name: 'Free',
+    price: '£0',
+    items: ['One mechanism per issue', 'The problem, the mechanism, the protocol, the application', 'By email'],
+  },
+  {
+    name: 'Members',
+    price: 'Price at launch',
+    items: [
+      'Everything in the free edition',
+      'A monthly long-form briefing: one topic, taken all the way down',
+      'Full archive of every briefing',
+      'Reply to any issue with a question; the best questions shape the next briefing',
+    ],
+  },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="N.M"
+    label="Newsletter · Members"
+    status="Not open yet"
+    lines={['The full depth,', '<em>once a month.</em>']}
+    lead="The free Operator's Lab explains one mechanism per issue. Members get a monthly long-form briefing that takes one topic all the way down, and the full archive."
+  />
+
+  <section class="section !pt-6" aria-labelledby="tiers-title">
+    <div class="wrap">
+      <SectionHead idx="N.M1" label="Editions">
+        <span id="tiers-title">Two editions.</span>
+      </SectionHead>
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        {
+          tiers.map((t, i) => (
+            <div
+              class:list={['panel', i === 1 && 'shadow-[inset_0_0_0_1px_var(--cb-amber)]']}
+              data-reveal
+              style={`--d:${i}`}
+            >
+              <p class="eyebrow">
+                <span class="idx">{String(i + 1).padStart(2, '0')}</span> {t.name}
+              </p>
+              <p class="ledger__price mt-6">{t.price}</p>
+              <ul class="ticks mt-6">
+                {t.items.map((x) => (
+                  <li>{x}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+      <div class="mt-16 grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-20">
+        <div class="prose-cb" data-reveal>
+          <p>
+            Members opens once the free edition has a body of work behind it. Join the list and you will hear first,
+            with the founding price.
+          </p>
+          <p class="mt-4">
+            Not subscribed to the free edition yet? <a class="link-u" href={getPermalink('/newsletter')}>Start there</a
+            >.
+          </p>
+        </div>
+        <WaitlistPanel
+          stream="newsletter-members"
+          guide="operators-lab-members"
+          title="Members waitlist"
+          buttonText="Join the waitlist"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

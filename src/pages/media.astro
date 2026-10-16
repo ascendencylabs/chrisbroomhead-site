@@ -1,0 +1,90 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import WaitlistPanel from '~/components/site/WaitlistPanel.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
+import { MEDIA_CHANNELS } from '~/config/partners';
+import { SOCIALS } from '~/data/site';
+import { getPermalink } from '~/utils/permalinks';
+
+const metadata = {
+  title: 'Media',
+  description: 'Video, podcast and interviews with Chris Broomhead.',
+};
+
+const formats = [
+  { k: 'Video', v: 'Mechanisms and protocol reasoning, explained on screen.' },
+  { k: 'Podcast', v: 'Long-form conversations about bloodwork, evidence and protocol design.' },
+  { k: 'Interviews', v: 'Guest appearances on other shows and publications.' },
+];
+---
+
+<Layout metadata={metadata}>
+  <PageHero
+    idx="M"
+    label="Media"
+    status="Channels launching"
+    lines={['Watch. Listen.', '<em>Read the reasoning.</em>']}
+    lead="Video, podcast and interviews: the same education-first approach as the consultations, in long form."
+  >
+    <CtaButton href={getPermalink('/practitioners')} variant="ghost">Invite Chris on your show</CtaButton>
+  </PageHero>
+
+  <section class="section !pt-6" aria-labelledby="channels">
+    <div class="wrap">
+      <SectionHead idx="M.1" label="Channels">
+        <span id="channels">Where to find it.</span>
+      </SectionHead>
+      {
+        MEDIA_CHANNELS.length > 0 ? (
+          <ul class="mt-12 grid gap-6 md:grid-cols-3">
+            {MEDIA_CHANNELS.map((c) => (
+              <li>
+                <a href={c.url} target="_blank" rel="me noopener" class="panel spot block no-underline">
+                  <p class="eyebrow">
+                    <span class="idx">{c.platform}</span>
+                  </p>
+                  <p class="h3 mt-4">{c.handle}</p>
+                  <p class="mt-2">{c.description}</p>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="mt-12 grid gap-px overflow-hidden rounded-[1.5rem] bg-[var(--cb-line)] md:grid-cols-3">
+            {formats.map((f, i) => (
+              <div class="bg-[var(--cb-ground)] p-8 md:p-10" data-reveal style={`--d:${i}`}>
+                <span class="tag tag--muted">Coming soon</span>
+                <h3 class="h3 mt-5">{f.k}</h3>
+                <p class="mt-3">{f.v}</p>
+              </div>
+            ))}
+          </div>
+        )
+      }
+      <div class="mt-16 grid gap-10 lg:grid-cols-2 lg:gap-20">
+        <div class="prose-cb" data-reveal>
+          <h2 class="h3">Following along now</h2>
+          <p class="mt-4">
+            Instagram is where the personal story is told:
+            {
+              SOCIALS.map((s) => (
+                <a class="link-u" href={s.href} target="_blank" rel="me noopener">
+                  {s.handle}
+                </a>
+              ))
+            }.
+          </p>
+        </div>
+        <WaitlistPanel
+          stream="media"
+          guide="media-launch"
+          title="Tell me when it launches"
+          note="One email when the first episode is out."
+          buttonText="Notify me"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

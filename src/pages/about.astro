@@ -1,9 +1,12 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import PageHero from '~/components/site/PageHero.astro';
+import SectionHead from '~/components/site/SectionHead.astro';
+import CtaButton from '~/components/site/CtaButton.astro';
 import Image from '~/components/common/Image.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import photo from '~/assets/images/chris-about.jpg';
+import photo from '~/assets/images/chris-grey.jpg';
+import smile from '~/assets/images/chris-smile.jpg';
+import { STATS } from '~/data/site';
 import { getPermalink } from '~/utils/permalinks';
 
 const metadata = {
@@ -11,53 +14,117 @@ const metadata = {
   description:
     'Chris Broomhead: from personal trainer and online coach to protocol design consultations. Manchester-born, UK-based.',
 };
+
+const timeline = [
+  {
+    k: 'Gym floor',
+    t: 'Personal trainer',
+    v: 'Coaching in gyms and running PT sessions in London. Training plans, nutrition, accountability.',
+  },
+  {
+    k: `${STATS.firstYear} →`,
+    t: 'Online coach',
+    v: 'Coaching calls on Zoom and by phone. The questions clients brought began to change: less about sets and reps, more about bloodwork, hormones and recovery.',
+  },
+  {
+    k: 'Now',
+    t: 'Protocol design consultations',
+    v: 'A structured review before the call, a straight answer on it, and a written protocol after it.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <WidgetWrapper containerClass="max-w-6xl mx-auto">
-    <div class="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-      <Image
-        src={photo}
-        alt="Chris Broomhead smiling, holding a phone, in a white T-shirt"
-        class="aspect-[4/5] w-full rounded-2xl object-cover object-top shadow-xl"
-        widths={[400, 640, 800]}
-        sizes="(max-width: 1023px) 90vw, 440px"
-        width={800}
-        height={1000}
-        format="webp"
-      />
-      <div>
-        <p class="text-sm font-bold uppercase tracking-[0.2em] text-accent dark:text-primary">About</p>
-        <h1 class="mt-3 font-heading text-4xl font-bold leading-tighter tracking-tighter text-heading md:text-5xl">
-          Evidence first. Everything written down.
-        </h1>
-        <div class="mt-6 space-y-5 text-lg leading-8">
-          <p>I'm Chris Broomhead. Made in Manchester, based in the UK.</p>
-          <p>
-            I started as a personal trainer and online coach. Training plans, nutrition, accountability. Over time the
-            questions clients brought me changed. Less about sets and reps. More about bloodwork, hormones, recovery and
-            peptides.
-          </p>
-          <p>
-            Those questions deserve more than a forum thread. They deserve a protocol built on data: your markers, your
-            history, your goal. That is what my consultations are.
-          </p>
-          <p>
-            No hype. No cookie-cutter stacks. A structured review before the call, a straight answer on it, and a written
-            summary after it.
-          </p>
-        </div>
-        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-          <a class="btn-primary" href={getPermalink('/book')}>Book a consultation</a>
-          <a class="btn-secondary" href={getPermalink('/work-with-me')}>See sessions and prices</a>
-        </div>
+  <PageHero
+    idx="A"
+    label="About"
+    lines={['Evidence first.', '<em>Everything written down.</em>']}
+    lead="I'm Chris Broomhead. Made in Manchester, based in the UK."
+    image={photo}
+    imageAlt="Chris Broomhead in a grey T-shirt, looking off camera"
+    imagePosition="50% 20%"
+    caption={['Fig. A1', 'Chris Broomhead']}
+  />
+
+  <section class="section !pt-6" aria-labelledby="about-story">
+    <div class="wrap grid gap-14 lg:grid-cols-[1fr_1.3fr] lg:gap-24">
+      <SectionHead idx="A.1" label="The short version">
+        <span id="about-story">From sets and reps <span class="thin">to bloodwork.</span></span>
+      </SectionHead>
+      <div class="body-copy prose-cb text-[1.15rem] leading-8" data-reveal>
+        <p>
+          I started as a personal trainer and online coach. Training plans, nutrition, accountability. Over time the
+          questions clients brought me changed. Less about sets and reps. More about bloodwork, hormones, recovery and
+          peptides.
+        </p>
+        <p>
+          Those questions deserve more than a forum thread. They deserve a protocol built on data: your markers, your
+          history, your goal. That is what my consultations are.
+        </p>
+        <p>
+          No hype. No cookie-cutter stacks. A structured review before the call, a straight answer on it, and a written
+          summary after it.
+        </p>
       </div>
     </div>
-  </WidgetWrapper>
+  </section>
 
-  <CallToAction
-    title="Not sure where to start?"
-    subtitle="Book the free 15-minute suitability call. You will leave knowing which session fits."
-    actions={[{ variant: 'primary', text: 'Book the free call', href: getPermalink('/book#suitability') }]}
-  />
+  <section class="section relative" aria-labelledby="about-timeline">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="wrap relative grid gap-14 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
+      <div>
+        <SectionHead idx="A.2" label="Record">
+          <span id="about-timeline">How it got <em>here.</em></span>
+        </SectionHead>
+        <ol class="mt-12 border-t border-[var(--cb-line-strong)]">
+          {
+            timeline.map((s, i) => (
+              <li
+                class="grid gap-2 border-b border-[var(--cb-line)] py-8 sm:grid-cols-[9rem_1fr] sm:gap-8"
+                data-reveal
+                style={`--d:${i}`}
+              >
+                <span class="meta pt-1 uppercase tracking-[0.14em] text-[var(--cb-amber)]">{s.k}</span>
+                <span>
+                  <span class="h3 block">{s.t}</span>
+                  <span class="mt-2 block">{s.v}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="meta mt-6">
+          {STATS.sessions} one-to-one sessions booked through Calendly since {STATS.firstYear}, with {STATS.people} different
+          people. Source: {STATS.source}, checked {STATS.checked}.
+        </p>
+      </div>
+      <figure class="plate self-end" data-reveal="clip">
+        <div class="plate__img aspect-[4/5]">
+          <Image
+            src={smile}
+            alt="Chris Broomhead smiling, holding a phone, in a white T-shirt"
+            widths={[360, 540, 720, 1080]}
+            sizes="(max-width: 1023px) 88vw, 480px"
+            layout="none"
+            format="webp"
+            style="object-position:50% 20%"
+          />
+        </div>
+        <figcaption class="plate__cap"><span class="meta">Fig. A2</span><span class="meta">UK</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section pt-0" aria-labelledby="about-cta">
+    <div class="wrap">
+      <div class="panel flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+        <div>
+          <p class="eyebrow"><span class="idx">→</span> Not sure where to start?</p>
+          <h2 id="about-cta" class="display display-m mt-5">Book the free <em>15-minute call.</em></h2>
+          <p class="mt-4 max-w-lg">You will leave knowing which session fits.</p>
+        </div>
+        <CtaButton href={getPermalink('/book#suitability')}>Book the free call</CtaButton>
+      </div>
+    </div>
+  </section>
 </Layout>
